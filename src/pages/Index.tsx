@@ -280,9 +280,17 @@ const Index = () => {
               </Select>
 
               <div className="flex items-center space-x-1 sm:space-x-2">
-                <Icon name="Sun" size={16} className="hidden sm:block" />
+                <Icon
+                  name="Sun"
+                  size={16}
+                  className={`hidden sm:block ${darkMode ? "text-gray-300" : "text-gray-600"}`}
+                />
                 <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-                <Icon name="Moon" size={16} className="hidden sm:block" />
+                <Icon
+                  name="Moon"
+                  size={16}
+                  className={`hidden sm:block ${darkMode ? "text-gray-300" : "text-gray-600"}`}
+                />
               </div>
 
               {/* Mobile Add Button */}
@@ -770,7 +778,7 @@ const Index = () => {
                             </CardTitle>
                             <p
                               className={`text-xs sm:text-sm ${
-                                darkMode ? "text-gray-300" : "text-gray-600"
+                                darkMode ? "text-gray-100" : "text-gray-600"
                               }`}
                             >
                               {listing.description}
@@ -783,7 +791,7 @@ const Index = () => {
                             </div>
                             <div
                               className={`text-xs ${
-                                darkMode ? "text-gray-400" : "text-gray-500"
+                                darkMode ? "text-gray-300" : "text-gray-500"
                               }`}
                             >
                               {listing.timeAgo}
@@ -800,11 +808,22 @@ const Index = () => {
                                 className="text-[#5865F2]"
                                 size={16}
                               />
-                              <span className="text-xs sm:text-sm font-medium">
+                              <span
+                                className={`text-xs sm:text-sm font-medium ${
+                                  darkMode ? "text-gray-100" : "text-gray-900"
+                                }`}
+                              >
                                 {listing.serverName}
                               </span>
                             </div>
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge
+                              variant="secondary"
+                              className={`text-xs ${
+                                darkMode
+                                  ? "bg-gray-600 text-gray-100"
+                                  : "bg-gray-200 text-gray-800"
+                              }`}
+                            >
                               {
                                 categories.find(
                                   (cat) => cat.id === listing.category,
@@ -816,12 +835,36 @@ const Index = () => {
                           <div className="flex items-center justify-between text-xs sm:text-sm">
                             <div className="flex items-center space-x-2 sm:space-x-4">
                               <div className="flex items-center space-x-1">
-                                <Icon name="Users" size={14} />
-                                <span>{listing.members.toLocaleString()}</span>
+                                <Icon
+                                  name="Users"
+                                  size={14}
+                                  className={
+                                    darkMode ? "text-gray-300" : "text-gray-600"
+                                  }
+                                />
+                                <span
+                                  className={
+                                    darkMode ? "text-gray-200" : "text-gray-700"
+                                  }
+                                >
+                                  {listing.members.toLocaleString()}
+                                </span>
                               </div>
                               <div className="flex items-center space-x-1">
-                                <Icon name="Eye" size={14} />
-                                <span>{listing.views}</span>
+                                <Icon
+                                  name="Eye"
+                                  size={14}
+                                  className={
+                                    darkMode ? "text-gray-300" : "text-gray-600"
+                                  }
+                                />
+                                <span
+                                  className={
+                                    darkMode ? "text-gray-200" : "text-gray-700"
+                                  }
+                                >
+                                  {listing.views}
+                                </span>
                               </div>
                             </div>
 
@@ -859,7 +902,7 @@ const Index = () => {
                 {userListings.length === 0 ? (
                   <div
                     className={`text-center py-8 ${
-                      darkMode ? "text-gray-400" : "text-gray-500"
+                      darkMode ? "text-gray-300" : "text-gray-500"
                     }`}
                   >
                     <Icon name="FileText" size={48} className="mx-auto mb-4" />
@@ -888,7 +931,7 @@ const Index = () => {
                               </CardTitle>
                               <p
                                 className={`text-xs sm:text-sm ${
-                                  darkMode ? "text-gray-300" : "text-gray-600"
+                                  darkMode ? "text-gray-100" : "text-gray-600"
                                 }`}
                               >
                                 {listing.description}
@@ -911,7 +954,14 @@ const Index = () => {
                                 {listing.price.toLocaleString()}{" "}
                                 {listing.currency}
                               </div>
-                              <Badge variant="secondary" className="text-xs">
+                              <Badge
+                                variant="secondary"
+                                className={`text-xs ${
+                                  darkMode
+                                    ? "bg-gray-600 text-gray-100"
+                                    : "bg-gray-200 text-gray-800"
+                                }`}
+                              >
                                 {
                                   categories.find(
                                     (cat) => cat.id === listing.category,
@@ -923,14 +973,44 @@ const Index = () => {
                             <div className="flex items-center justify-between text-xs sm:text-sm">
                               <div className="flex items-center space-x-2 sm:space-x-4">
                                 <div className="flex items-center space-x-1">
-                                  <Icon name="Users" size={14} />
-                                  <span>
+                                  <Icon
+                                    name="Users"
+                                    size={14}
+                                    className={
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-600"
+                                    }
+                                  />
+                                  <span
+                                    className={
+                                      darkMode
+                                        ? "text-gray-200"
+                                        : "text-gray-700"
+                                    }
+                                  >
                                     {listing.members.toLocaleString()}
                                   </span>
                                 </div>
                                 <div className="flex items-center space-x-1">
-                                  <Icon name="Eye" size={14} />
-                                  <span>{listing.views}</span>
+                                  <Icon
+                                    name="Eye"
+                                    size={14}
+                                    className={
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-600"
+                                    }
+                                  />
+                                  <span
+                                    className={
+                                      darkMode
+                                        ? "text-gray-200"
+                                        : "text-gray-700"
+                                    }
+                                  >
+                                    {listing.views}
+                                  </span>
                                 </div>
                               </div>
 
