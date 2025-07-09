@@ -1247,10 +1247,10 @@ const Index = () => {
                         }`}
                       >
                         <CardHeader className="pb-3">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-0">
+                            <div className="flex-1 w-full">
                               <CardTitle
-                                className={`text-lg font-semibold mb-2 ${
+                                className={`text-base sm:text-lg font-semibold mb-2 ${
                                   darkMode ? "text-white" : "text-gray-900"
                                 }`}
                               >
@@ -1263,7 +1263,103 @@ const Index = () => {
                               >
                                 {listing.description}
                               </p>
-                              <div className="flex items-center space-x-6 text-sm">
+
+                              {/* Mobile: Vertical layout */}
+                              <div className="flex flex-col gap-2 sm:hidden">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center space-x-2">
+                                    <Icon
+                                      name="MessageSquare"
+                                      className="text-[#5865F2]"
+                                      size={14}
+                                    />
+                                    <span
+                                      className={`text-sm font-medium cursor-pointer hover:text-[#5865F2] transition-colors ${
+                                        darkMode
+                                          ? "text-gray-100"
+                                          : "text-gray-900"
+                                      }`}
+                                      onClick={() => {
+                                        handleClick(listing.id);
+                                        window.open(
+                                          listing.serverLink,
+                                          "_blank",
+                                        );
+                                      }}
+                                    >
+                                      {listing.serverName}
+                                    </span>
+                                  </div>
+                                  <Badge
+                                    variant="secondary"
+                                    className={`text-xs ${
+                                      darkMode
+                                        ? "bg-gray-600 text-gray-100"
+                                        : "bg-gray-200 text-gray-800"
+                                    }`}
+                                  >
+                                    {
+                                      categories.find(
+                                        (cat) => cat.id === listing.category,
+                                      )?.name
+                                    }
+                                  </Badge>
+                                </div>
+                                <div className="flex items-center space-x-4 text-sm">
+                                  <div className="flex items-center space-x-1">
+                                    <Icon
+                                      name="Users"
+                                      size={12}
+                                      className={
+                                        darkMode
+                                          ? "text-gray-300"
+                                          : "text-gray-600"
+                                      }
+                                    />
+                                    <span
+                                      className={
+                                        darkMode
+                                          ? "text-gray-200"
+                                          : "text-gray-700"
+                                      }
+                                    >
+                                      {listing.members.toLocaleString()}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center space-x-1">
+                                    <Icon
+                                      name="Eye"
+                                      size={12}
+                                      className={
+                                        darkMode
+                                          ? "text-gray-300"
+                                          : "text-gray-600"
+                                      }
+                                    />
+                                    <span
+                                      className={
+                                        darkMode
+                                          ? "text-gray-200"
+                                          : "text-gray-700"
+                                      }
+                                    >
+                                      {listing.views}
+                                    </span>
+                                  </div>
+                                  <div
+                                    className={`text-xs ml-auto ${
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-500"
+                                    }`}
+                                  >
+                                    {listing.timeAgo}
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Desktop: Horizontal layout */}
+                              <div className="hidden sm:flex items-center space-x-6 text-sm">
                                 <div className="flex items-center space-x-2">
                                   <Icon
                                     name="MessageSquare"
@@ -1340,30 +1436,57 @@ const Index = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="text-right flex flex-col items-end">
-                              <div className="text-xl font-bold text-[#5865F2] mb-1">
+                            {/* Price and actions section */}
+                            <div className="flex items-center justify-between w-full sm:w-auto sm:flex-col sm:items-end sm:text-right">
+                              <div className="text-lg sm:text-xl font-bold text-[#5865F2] sm:mb-1">
                                 {listing.price.toLocaleString()}{" "}
                                 {listing.currency}
                               </div>
-                              <div
-                                className={`text-xs mb-2 ${
-                                  darkMode ? "text-gray-300" : "text-gray-500"
-                                }`}
-                              >
-                                {listing.timeAgo}
-                              </div>
-                              {listing.isPinned && (
-                                <Badge
-                                  variant="secondary"
-                                  className="mb-2 text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
-                                >
-                                  <Icon name="Pin" size={10} className="mr-1" />
-                                  {t("listing.pinned")}
-                                </Badge>
-                              )}
+
                               <div className="flex items-center space-x-2">
+                                <div className="hidden sm:block">
+                                  <div
+                                    className={`text-xs mb-2 ${
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-500"
+                                    }`}
+                                  >
+                                    {listing.timeAgo}
+                                  </div>
+                                  {listing.isPinned && (
+                                    <Badge
+                                      variant="secondary"
+                                      className="mb-2 text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
+                                    >
+                                      <Icon
+                                        name="Pin"
+                                        size={10}
+                                        className="mr-1"
+                                      />
+                                      {t("listing.pinned")}
+                                    </Badge>
+                                  )}
+                                </div>
+
+                                {/* Mobile: Show pinned badge next to price */}
+                                {listing.isPinned && (
+                                  <Badge
+                                    variant="secondary"
+                                    className="sm:hidden text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
+                                  >
+                                    <Icon
+                                      name="Pin"
+                                      size={8}
+                                      className="mr-1"
+                                    />
+                                    {t("listing.pinned")}
+                                  </Badge>
+                                )}
+
+                                {/* Mobile: Compact admin controls */}
                                 {isAdminMode && (
-                                  <>
+                                  <div className="flex items-center space-x-1 sm:space-x-2">
                                     <Checkbox
                                       id={`pin-${listing.id}`}
                                       checked={listing.isPinned || false}
@@ -1377,7 +1500,7 @@ const Index = () => {
                                       className="text-xs text-gray-600 dark:text-gray-400 cursor-pointer"
                                       title={t("listing.pin")}
                                     >
-                                      <Icon name="Pin" size={12} />
+                                      <Icon name="Pin" size={10} />
                                     </label>
                                     <Button
                                       size="sm"
@@ -1385,23 +1508,29 @@ const Index = () => {
                                       onClick={() =>
                                         handleDeleteListing(listing.id)
                                       }
-                                      className="p-2"
+                                      className="p-1 sm:p-2"
                                     >
-                                      <Icon name="Trash2" size={14} />
+                                      <Icon name="Trash2" size={10} />
                                     </Button>
-                                  </>
+                                  </div>
                                 )}
+
                                 <Button
                                   size="sm"
-                                  className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-sm px-3"
+                                  className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
                                   onClick={() => handleClick(listing.id)}
                                 >
                                   <Icon
                                     name="MessageCircle"
                                     className="mr-1"
-                                    size={14}
+                                    size={10}
                                   />
-                                  {t("listing.contact")}
+                                  <span className="hidden sm:inline">
+                                    {t("listing.contact")}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {t("listing.contactShort")}
+                                  </span>
                                 </Button>
                               </div>
                             </div>
@@ -1603,10 +1732,10 @@ const Index = () => {
                             }`}
                           >
                             <CardHeader className="pb-3">
-                              <div className="flex items-start justify-between">
-                                <div className="flex-1">
+                              <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-0">
+                                <div className="flex-1 w-full">
                                   <CardTitle
-                                    className={`text-lg font-semibold mb-2 ${
+                                    className={`text-base sm:text-lg font-semibold mb-2 ${
                                       darkMode ? "text-white" : "text-gray-900"
                                     }`}
                                   >
@@ -1621,7 +1750,91 @@ const Index = () => {
                                   >
                                     {listing.description}
                                   </p>
-                                  <div className="flex items-center space-x-6 text-sm">
+                                  {/* Mobile: Vertical layout */}
+                                  <div className="flex flex-col gap-2 sm:hidden">
+                                    <div className="flex items-center justify-between">
+                                      <Badge
+                                        variant="secondary"
+                                        className={`text-xs ${
+                                          darkMode
+                                            ? "bg-gray-600 text-gray-100"
+                                            : "bg-gray-200 text-gray-800"
+                                        }`}
+                                      >
+                                        {
+                                          categories.find(
+                                            (cat) =>
+                                              cat.id === listing.category,
+                                          )?.name
+                                        }
+                                      </Badge>
+                                    </div>
+                                    <div className="flex items-center space-x-4 text-sm">
+                                      <div className="flex items-center space-x-1">
+                                        <Icon
+                                          name="Users"
+                                          size={12}
+                                          className={
+                                            darkMode
+                                              ? "text-gray-300"
+                                              : "text-gray-600"
+                                          }
+                                        />
+                                        <span
+                                          className={
+                                            darkMode
+                                              ? "text-gray-200"
+                                              : "text-gray-700"
+                                          }
+                                        >
+                                          {listing.members.toLocaleString()}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center space-x-1">
+                                        <Icon
+                                          name="Eye"
+                                          size={12}
+                                          className={
+                                            darkMode
+                                              ? "text-gray-300"
+                                              : "text-gray-600"
+                                          }
+                                        />
+                                        <span
+                                          className={
+                                            darkMode
+                                              ? "text-gray-200"
+                                              : "text-gray-700"
+                                          }
+                                        >
+                                          {listing.views}
+                                        </span>
+                                      </div>
+                                      <div className="flex items-center space-x-1">
+                                        <Icon
+                                          name="MousePointerClick"
+                                          size={12}
+                                          className={
+                                            darkMode
+                                              ? "text-gray-300"
+                                              : "text-gray-600"
+                                          }
+                                        />
+                                        <span
+                                          className={
+                                            darkMode
+                                              ? "text-gray-200"
+                                              : "text-gray-700"
+                                          }
+                                        >
+                                          {listing.clicks}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {/* Desktop: Horizontal layout */}
+                                  <div className="hidden sm:flex items-center space-x-6 text-sm">
                                     <div className="flex items-center space-x-1">
                                       <Icon
                                         name="Users"
@@ -1698,26 +1911,32 @@ const Index = () => {
                                     </Badge>
                                   </div>
                                 </div>
-                                <div className="text-right flex flex-col items-end">
-                                  <div className="text-xl font-bold text-[#5865F2] mb-2">
+                                {/* Price and actions section */}
+                                <div className="flex items-center justify-between w-full sm:w-auto sm:flex-col sm:items-end sm:text-right">
+                                  <div className="text-lg sm:text-xl font-bold text-[#5865F2] sm:mb-2">
                                     {listing.price.toLocaleString()}{" "}
                                     {listing.currency}
                                   </div>
-                                  <div className="flex items-center space-x-2">
+                                  <div className="flex items-center space-x-1 sm:space-x-2">
                                     <Button
                                       size="sm"
                                       variant="outline"
                                       onClick={() => handleEditListing(listing)}
-                                      className="text-sm px-3"
+                                      className="text-xs sm:text-sm px-2 sm:px-3"
                                     >
                                       <Icon
                                         name="Edit"
                                         className="mr-1"
-                                        size={14}
+                                        size={12}
                                       />
-                                      {language === "en"
-                                        ? "Edit"
-                                        : "Редактировать"}
+                                      <span className="hidden sm:inline">
+                                        {language === "en"
+                                          ? "Edit"
+                                          : "Редактировать"}
+                                      </span>
+                                      <span className="sm:hidden">
+                                        {language === "en" ? "Edit" : "Ред."}
+                                      </span>
                                     </Button>
                                     <Button
                                       size="sm"
@@ -1725,9 +1944,9 @@ const Index = () => {
                                       onClick={() =>
                                         handleDeleteListing(listing.id)
                                       }
-                                      className="p-2"
+                                      className="p-1 sm:p-2"
                                     >
-                                      <Icon name="Trash2" size={14} />
+                                      <Icon name="Trash2" size={10} />
                                     </Button>
                                   </div>
                                 </div>
