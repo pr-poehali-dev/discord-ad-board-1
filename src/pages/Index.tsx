@@ -323,14 +323,20 @@ const Index = () => {
                 <div className="relative">
                   <Switch checked={darkMode} onCheckedChange={setDarkMode} />
                   {/* Icons inside the switch circle - visible on mobile */}
-                  <div className="absolute inset-y-0 left-0 flex items-center justify-center w-5 h-5 ml-0.5 sm:hidden pointer-events-none">
+                  {/* Sun icon - centered in left position when light mode */}
+                  <div
+                    className={`absolute top-1/2 left-0.5 -translate-y-1/2 flex items-center justify-center w-5 h-5 sm:hidden pointer-events-none transition-all duration-200 ${darkMode ? "translate-x-5" : "translate-x-0"}`}
+                  >
                     <Icon
                       name="Sun"
                       size={10}
                       className={`transition-opacity duration-200 ${darkMode ? "opacity-0" : "opacity-100"} text-gray-600`}
                     />
                   </div>
-                  <div className="absolute inset-y-0 right-0 flex items-center justify-center w-5 h-5 mr-0.5 sm:hidden pointer-events-none">
+                  {/* Moon icon - centered in right position when dark mode */}
+                  <div
+                    className={`absolute top-1/2 left-0.5 -translate-y-1/2 flex items-center justify-center w-5 h-5 sm:hidden pointer-events-none transition-all duration-200 ${darkMode ? "translate-x-5" : "translate-x-0"}`}
+                  >
                     <Icon
                       name="Moon"
                       size={10}
