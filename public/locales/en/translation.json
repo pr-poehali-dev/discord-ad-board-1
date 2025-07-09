@@ -41,7 +41,9 @@
     "edit": "Edit",
     "justNow": "Just now",
     "hoursAgo": "{{count}} hours ago",
-    "ago": "ago"
+    "ago": "ago",
+    "pinned": "Pinned",
+    "pin": "Pin"
   },
   "categories": {
     "gaming": "Gaming",

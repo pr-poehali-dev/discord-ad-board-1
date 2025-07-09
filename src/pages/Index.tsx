@@ -46,6 +46,7 @@ interface Listing {
   timeAgo: string;
   serverName: string;
   isOwner?: boolean;
+  isPinned?: boolean;
 }
 
 const Index = () => {
@@ -110,6 +111,7 @@ const Index = () => {
       clicks: 23,
       timeAgo: language === "en" ? "2 hours ago" : "2 часа назад",
       serverName: "GameHub",
+      isPinned: true,
     },
     {
       id: "2",
@@ -128,6 +130,7 @@ const Index = () => {
       clicks: 15,
       timeAgo: language === "en" ? "4 hours ago" : "4 часа назад",
       serverName: "CryptoTalk",
+      isPinned: false,
     },
   ]);
 
@@ -142,6 +145,11 @@ const Index = () => {
       return categoryMatch && currencyMatch;
     })
     .sort((a, b) => {
+      // Закрепленные объявления всегда первые
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+
+      // Если оба закреплены или оба не закреплены, сортируем по выбранному критерию
       if (sortBy === "newest") return 0;
       if (sortBy === "cheapest") return a.price - b.price;
       if (sortBy === "expensive") return b.price - a.price;
@@ -211,6 +219,16 @@ const Index = () => {
       serverLink: listing.serverLink,
     });
     setIsEditListingOpen(true);
+  };
+
+  const handleTogglePin = (id: string) => {
+    setListings((prev) =>
+      prev.map((listing) =>
+        listing.id === id
+          ? { ...listing, isPinned: !listing.isPinned }
+          : listing,
+      ),
+    );
   };
 
   const handleUpdateListing = () => {
@@ -975,16 +993,33 @@ const Index = () => {
                                 {listing.title}
                               </CardTitle>
                               {isAdminMode && (
-                                <Button
-                                  size="sm"
-                                  variant="destructive"
-                                  onClick={() =>
-                                    handleDeleteListing(listing.id)
-                                  }
-                                  className="p-2 ml-2"
-                                >
-                                  <Icon name="Trash2" size={14} />
-                                </Button>
+                                <div className="flex items-center space-x-2 ml-2">
+                                  <Checkbox
+                                    id={`pin-${listing.id}`}
+                                    checked={listing.isPinned || false}
+                                    onCheckedChange={() =>
+                                      handleTogglePin(listing.id)
+                                    }
+                                    className="data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
+                                  />
+                                  <label
+                                    htmlFor={`pin-${listing.id}`}
+                                    className="text-xs text-gray-600 dark:text-gray-400 cursor-pointer"
+                                    title={t("listing.pin")}
+                                  >
+                                    <Icon name="Pin" size={12} />
+                                  </label>
+                                  <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    onClick={() =>
+                                      handleDeleteListing(listing.id)
+                                    }
+                                    className="p-2"
+                                  >
+                                    <Icon name="Trash2" size={14} />
+                                  </Button>
+                                </div>
                               )}
                             </div>
                             <p
@@ -1007,6 +1042,15 @@ const Index = () => {
                             >
                               {listing.timeAgo}
                             </div>
+                            {listing.isPinned && (
+                              <Badge
+                                variant="secondary"
+                                className="mt-1 text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
+                              >
+                                <Icon name="Pin" size={10} className="mr-1" />
+                                {t("listing.pinned")}
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       </CardHeader>
