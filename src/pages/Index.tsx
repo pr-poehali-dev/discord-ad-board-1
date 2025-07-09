@@ -22,6 +22,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 
 interface Listing {
@@ -47,8 +54,19 @@ const Index = () => {
   const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("newest");
   const [isAddListingOpen, setIsAddListingOpen] = useState(false);
+  const [isEditListingOpen, setIsEditListingOpen] = useState(false);
+  const [editingListing, setEditingListing] = useState<Listing | null>(null);
 
   const [newListing, setNewListing] = useState({
+    title: "",
+    description: "",
+    category: "",
+    price: "",
+    currency: "USD",
+    serverLink: "",
+  });
+
+  const [editListing, setEditListing] = useState({
     title: "",
     description: "",
     category: "",
@@ -173,6 +191,50 @@ const Index = () => {
     setListings((prev) => prev.filter((listing) => listing.id !== id));
   };
 
+  const handleEditListing = (listing: Listing) => {
+    setEditingListing(listing);
+    setEditListing({
+      title: listing.title,
+      description: listing.description,
+      category: listing.category,
+      price: listing.price.toString(),
+      currency: listing.currency,
+      serverLink: listing.serverLink,
+    });
+    setIsEditListingOpen(true);
+  };
+
+  const handleUpdateListing = () => {
+    if (!editingListing) return;
+
+    setListings((prev) =>
+      prev.map((listing) =>
+        listing.id === editingListing.id
+          ? {
+              ...listing,
+              title: editListing.title,
+              description: editListing.description,
+              category: editListing.category,
+              price: parseFloat(editListing.price),
+              currency: editListing.currency,
+              serverLink: editListing.serverLink,
+            }
+          : listing,
+      ),
+    );
+
+    setIsEditListingOpen(false);
+    setEditingListing(null);
+    setEditListing({
+      title: "",
+      description: "",
+      category: "",
+      price: "",
+      currency: "USD",
+      serverLink: "",
+    });
+  };
+
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedCurrencies([]);
@@ -193,20 +255,22 @@ const Index = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="flex items-center space-x-2">
                 <Icon
                   name="MessageSquare"
                   className="text-[#5865F2]"
-                  size={32}
+                  size={24}
                 />
-                <h1 className="text-2xl font-bold">Discord Ads Board</h1>
+                <h1 className="text-lg sm:text-2xl font-bold">
+                  Discord Ads Board
+                </h1>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger className="w-20">
+                <SelectTrigger className="w-16 sm:w-20">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -215,23 +279,190 @@ const Index = () => {
                 </SelectContent>
               </Select>
 
-              <div className="flex items-center space-x-2">
-                <Icon name="Sun" size={16} />
+              <div className="flex items-center space-x-1 sm:space-x-2">
+                <Icon name="Sun" size={16} className="hidden sm:block" />
                 <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-                <Icon name="Moon" size={16} />
+                <Icon name="Moon" size={16} className="hidden sm:block" />
               </div>
 
+              {/* Mobile Add Button */}
+              <Sheet open={isAddListingOpen} onOpenChange={setIsAddListingOpen}>
+                <SheetTrigger asChild>
+                  <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white sm:hidden p-2">
+                    <Icon name="Plus" size={16} />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent
+                  side="bottom"
+                  className="h-[90vh] overflow-y-auto"
+                >
+                  <SheetHeader>
+                    <SheetTitle>
+                      {language === "en" ? "New Listing" : "Новое объявление"}
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="space-y-4 mt-4">
+                    <div>
+                      <Label htmlFor="mobile-title">
+                        {language === "en" ? "Title" : "Заголовок"}
+                      </Label>
+                      <Input
+                        id="mobile-title"
+                        placeholder={
+                          language === "en"
+                            ? "Brief description of the offer"
+                            : "Краткое описание предложения"
+                        }
+                        value={newListing.title}
+                        onChange={(e) =>
+                          setNewListing({
+                            ...newListing,
+                            title: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="mobile-description">
+                        {language === "en" ? "Description" : "Описание"}
+                      </Label>
+                      <Textarea
+                        id="mobile-description"
+                        placeholder={
+                          language === "en"
+                            ? "Detailed description of the advertising offer"
+                            : "Детальное описание рекламного предложения"
+                        }
+                        value={newListing.description}
+                        onChange={(e) =>
+                          setNewListing({
+                            ...newListing,
+                            description: e.target.value,
+                          })
+                        }
+                        rows={3}
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="mobile-serverLink">
+                        {language === "en"
+                          ? "Discord Server Link"
+                          : "Ссылка на Discord сервер"}
+                      </Label>
+                      <Input
+                        id="mobile-serverLink"
+                        placeholder="https://discord.gg/server"
+                        value={newListing.serverLink}
+                        onChange={(e) =>
+                          setNewListing({
+                            ...newListing,
+                            serverLink: e.target.value,
+                          })
+                        }
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="mobile-category">
+                        {language === "en" ? "Category" : "Категория"}
+                      </Label>
+                      <Select
+                        value={newListing.category}
+                        onValueChange={(value) =>
+                          setNewListing({ ...newListing, category: value })
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={
+                              language === "en"
+                                ? "Gaming, IT, Finance"
+                                : "Игры, ИТ, Финансы"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label htmlFor="mobile-price">
+                          {language === "en" ? "Price" : "Цена"}
+                        </Label>
+                        <Input
+                          id="mobile-price"
+                          type="number"
+                          placeholder="5,000"
+                          value={newListing.price}
+                          onChange={(e) =>
+                            setNewListing({
+                              ...newListing,
+                              price: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="mobile-currency">
+                          {language === "en" ? "Currency" : "Валюта"}
+                        </Label>
+                        <Select
+                          value={newListing.currency}
+                          onValueChange={(value) =>
+                            setNewListing({ ...newListing, currency: value })
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {currencies.map((currency) => (
+                              <SelectItem key={currency} value={currency}>
+                                {currency}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={handleAddListing}
+                      className="w-full bg-[#5865F2] hover:bg-[#4752C4] text-white"
+                      disabled={
+                        !newListing.title ||
+                        !newListing.description ||
+                        !newListing.category ||
+                        !newListing.price
+                      }
+                    >
+                      {language === "en" ? "Publish" : "Опубликовать"}
+                    </Button>
+                  </div>
+                </SheetContent>
+              </Sheet>
+
+              {/* Desktop Add Button */}
               <Dialog
                 open={isAddListingOpen}
                 onOpenChange={setIsAddListingOpen}
               >
                 <DialogTrigger asChild>
-                  <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white">
+                  <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white hidden sm:flex">
                     <Icon name="Plus" className="mr-2" size={16} />
                     {language === "en" ? "Add Listing" : "Добавить объявление"}
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-md">
+                <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle>
                       {language === "en" ? "New Listing" : "Новое объявление"}
@@ -400,17 +631,19 @@ const Index = () => {
             <TabsList className="grid w-full max-w-md grid-cols-2">
               <TabsTrigger
                 value="listings"
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-1 sm:space-x-2"
               >
                 <Icon name="List" size={16} />
-                <span>{language === "en" ? "Listings" : "Объявления"}</span>
+                <span className="text-xs sm:text-sm">
+                  {language === "en" ? "Listings" : "Объявления"}
+                </span>
               </TabsTrigger>
               <TabsTrigger
                 value="profile"
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-1 sm:space-x-2"
               >
                 <Icon name="User" size={16} />
-                <span>
+                <span className="text-xs sm:text-sm">
                   {language === "en" ? "My Listings" : "Мои объявления"}
                 </span>
               </TabsTrigger>
@@ -418,9 +651,9 @@ const Index = () => {
 
             <TabsContent value="listings" className="mt-0">
               {/* Filters */}
-              <div className="py-6 space-y-4">
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex-1 min-w-64">
+              <div className="py-4 sm:py-6 space-y-4">
+                <div className="space-y-4 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
+                  <div className="w-full sm:flex-1 sm:min-w-64">
                     <Label className="text-sm font-medium mb-2 block">
                       {language === "en" ? "Categories" : "Категории"}
                     </Label>
@@ -439,7 +672,7 @@ const Index = () => {
                           />
                           <label
                             htmlFor={category.id}
-                            className="text-sm cursor-pointer"
+                            className="text-xs sm:text-sm cursor-pointer"
                           >
                             {category.name}
                           </label>
@@ -448,7 +681,7 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <div className="flex-1 min-w-48">
+                  <div className="w-full sm:flex-1 sm:min-w-48">
                     <Label className="text-sm font-medium mb-2 block">
                       {language === "en" ? "Currency" : "Валюта"}
                     </Label>
@@ -467,7 +700,7 @@ const Index = () => {
                           />
                           <label
                             htmlFor={currency}
-                            className="text-sm cursor-pointer"
+                            className="text-xs sm:text-sm cursor-pointer"
                           >
                             {currency}
                           </label>
@@ -476,13 +709,13 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <div className="flex-1 min-w-48">
+                  <div className="w-full sm:flex-1 sm:min-w-48">
                     <Label className="text-sm font-medium mb-2 block">
                       {language === "en" ? "Sorting" : "Сортировка"}
                     </Label>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                       <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger className="w-48">
+                        <SelectTrigger className="w-full sm:w-48">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -507,7 +740,7 @@ const Index = () => {
                       <Button
                         variant="outline"
                         onClick={resetFilters}
-                        className="flex items-center space-x-2"
+                        className="flex items-center justify-center space-x-2 w-full sm:w-auto"
                       >
                         <Icon name="RotateCcw" size={16} />
                         <span>{language === "en" ? "Reset" : "Сброс"}</span>
@@ -519,7 +752,7 @@ const Index = () => {
 
               {/* Listings */}
               <div className="pb-8">
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredListings.map((listing) => (
                     <Card
                       key={listing.id}
@@ -530,21 +763,21 @@ const Index = () => {
                       }`}
                     >
                       <CardHeader className="pb-3">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <CardTitle className="text-lg font-semibold mb-2">
+                        <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
+                          <div className="flex-1 w-full">
+                            <CardTitle className="text-base sm:text-lg font-semibold mb-2">
                               {listing.title}
                             </CardTitle>
                             <p
-                              className={`text-sm ${
+                              className={`text-xs sm:text-sm ${
                                 darkMode ? "text-gray-300" : "text-gray-600"
                               }`}
                             >
                               {listing.description}
                             </p>
                           </div>
-                          <div className="text-right">
-                            <div className="text-xl font-bold text-[#5865F2]">
+                          <div className="text-right w-full sm:w-auto">
+                            <div className="text-lg sm:text-xl font-bold text-[#5865F2]">
                               {listing.price.toLocaleString()}{" "}
                               {listing.currency}
                             </div>
@@ -567,7 +800,7 @@ const Index = () => {
                                 className="text-[#5865F2]"
                                 size={16}
                               />
-                              <span className="text-sm font-medium">
+                              <span className="text-xs sm:text-sm font-medium">
                                 {listing.serverName}
                               </span>
                             </div>
@@ -580,8 +813,8 @@ const Index = () => {
                             </Badge>
                           </div>
 
-                          <div className="flex items-center justify-between text-sm">
-                            <div className="flex items-center space-x-4">
+                          <div className="flex items-center justify-between text-xs sm:text-sm">
+                            <div className="flex items-center space-x-2 sm:space-x-4">
                               <div className="flex items-center space-x-1">
                                 <Icon name="Users" size={14} />
                                 <span>{listing.members.toLocaleString()}</span>
@@ -594,14 +827,19 @@ const Index = () => {
 
                             <Button
                               size="sm"
-                              className="bg-[#5865F2] hover:bg-[#4752C4] text-white"
+                              className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
                             >
                               <Icon
                                 name="MessageCircle"
                                 className="mr-1"
                                 size={14}
                               />
-                              {language === "en" ? "Contact" : "Связаться"}
+                              <span className="hidden sm:inline">
+                                {language === "en" ? "Contact" : "Связаться"}
+                              </span>
+                              <span className="sm:hidden">
+                                {language === "en" ? "Contact" : "Связь"}
+                              </span>
                             </Button>
                           </div>
                         </div>
@@ -632,7 +870,7 @@ const Index = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {userListings.map((listing) => (
                       <Card
                         key={listing.id}
@@ -645,11 +883,11 @@ const Index = () => {
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <CardTitle className="text-lg font-semibold mb-2">
+                              <CardTitle className="text-base sm:text-lg font-semibold mb-2">
                                 {listing.title}
                               </CardTitle>
                               <p
-                                className={`text-sm ${
+                                className={`text-xs sm:text-sm ${
                                   darkMode ? "text-gray-300" : "text-gray-600"
                                 }`}
                               >
@@ -660,6 +898,7 @@ const Index = () => {
                               size="sm"
                               variant="destructive"
                               onClick={() => handleDeleteListing(listing.id)}
+                              className="p-2"
                             >
                               <Icon name="Trash2" size={14} />
                             </Button>
@@ -668,7 +907,7 @@ const Index = () => {
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                              <div className="text-xl font-bold text-[#5865F2]">
+                              <div className="text-lg sm:text-xl font-bold text-[#5865F2]">
                                 {listing.price.toLocaleString()}{" "}
                                 {listing.currency}
                               </div>
@@ -681,8 +920,8 @@ const Index = () => {
                               </Badge>
                             </div>
 
-                            <div className="flex items-center justify-between text-sm">
-                              <div className="flex items-center space-x-4">
+                            <div className="flex items-center justify-between text-xs sm:text-sm">
+                              <div className="flex items-center space-x-2 sm:space-x-4">
                                 <div className="flex items-center space-x-1">
                                   <Icon name="Users" size={14} />
                                   <span>
@@ -695,9 +934,19 @@ const Index = () => {
                                 </div>
                               </div>
 
-                              <Button size="sm" variant="outline">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleEditListing(listing)}
+                                className="text-xs sm:text-sm px-2 sm:px-3"
+                              >
                                 <Icon name="Edit" className="mr-1" size={14} />
-                                {language === "en" ? "Edit" : "Редактировать"}
+                                <span className="hidden sm:inline">
+                                  {language === "en" ? "Edit" : "Редактировать"}
+                                </span>
+                                <span className="sm:hidden">
+                                  {language === "en" ? "Edit" : "Ред."}
+                                </span>
                               </Button>
                             </div>
                           </div>
@@ -711,6 +960,165 @@ const Index = () => {
           </Tabs>
         </div>
       </nav>
+
+      {/* Edit Listing Modal */}
+      <Dialog open={isEditListingOpen} onOpenChange={setIsEditListingOpen}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {language === "en" ? "Edit Listing" : "Редактировать объявление"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="edit-title">
+                {language === "en" ? "Title" : "Заголовок"}
+              </Label>
+              <Input
+                id="edit-title"
+                placeholder={
+                  language === "en"
+                    ? "Brief description of the offer"
+                    : "Краткое описание предложения"
+                }
+                value={editListing.title}
+                onChange={(e) =>
+                  setEditListing({ ...editListing, title: e.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-description">
+                {language === "en" ? "Description" : "Описание"}
+              </Label>
+              <Textarea
+                id="edit-description"
+                placeholder={
+                  language === "en"
+                    ? "Detailed description of the advertising offer"
+                    : "Детальное описание рекламного предложения"
+                }
+                value={editListing.description}
+                onChange={(e) =>
+                  setEditListing({
+                    ...editListing,
+                    description: e.target.value,
+                  })
+                }
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-serverLink">
+                {language === "en"
+                  ? "Discord Server Link"
+                  : "Ссылка на Discord сервер"}
+              </Label>
+              <Input
+                id="edit-serverLink"
+                placeholder="https://discord.gg/server"
+                value={editListing.serverLink}
+                onChange={(e) =>
+                  setEditListing({
+                    ...editListing,
+                    serverLink: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="edit-category">
+                {language === "en" ? "Category" : "Категория"}
+              </Label>
+              <Select
+                value={editListing.category}
+                onValueChange={(value) =>
+                  setEditListing({ ...editListing, category: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      language === "en"
+                        ? "Gaming, IT, Finance"
+                        : "Игры, ИТ, Финансы"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex space-x-2">
+              <div className="flex-1">
+                <Label htmlFor="edit-price">
+                  {language === "en" ? "Price" : "Цена"}
+                </Label>
+                <Input
+                  id="edit-price"
+                  type="number"
+                  placeholder="5,000"
+                  value={editListing.price}
+                  onChange={(e) =>
+                    setEditListing({ ...editListing, price: e.target.value })
+                  }
+                />
+              </div>
+              <div className="w-24">
+                <Label>&nbsp;</Label>
+                <Select
+                  value={editListing.currency}
+                  onValueChange={(value) =>
+                    setEditListing({ ...editListing, currency: value })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsEditListingOpen(false)}
+                className="flex-1"
+              >
+                {language === "en" ? "Cancel" : "Отмена"}
+              </Button>
+              <Button
+                onClick={handleUpdateListing}
+                className="flex-1 bg-[#5865F2] hover:bg-[#4752C4] text-white"
+                disabled={
+                  !editListing.title ||
+                  !editListing.description ||
+                  !editListing.category ||
+                  !editListing.price
+                }
+              >
+                {language === "en" ? "Update" : "Обновить"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
