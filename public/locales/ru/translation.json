@@ -8,7 +8,8 @@
     "sortPriceLow": "Цена: по возрастанию",
     "sortPriceHigh": "Цена: по убыванию",
     "reset": "Сбросить",
-    "addListing": "Добавить объявление"
+    "addListing": "Добавить объявление",
+    "adminMode": "Режим администратора"
   },
   "navigation": {
     "listings": "Объявления",

@@ -52,6 +52,7 @@ const Index = () => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState(i18n.language || "en");
   const [darkMode, setDarkMode] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(false);
   const [currentView, setCurrentView] = useState("listings");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([]);
@@ -331,6 +332,23 @@ const Index = () => {
                   </SelectItem>
                 </SelectContent>
               </Select>
+
+              {/* Admin mode toggle button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsAdminMode(!isAdminMode)}
+                className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
+                  isAdminMode
+                    ? "text-red-500 bg-red-50 dark:bg-red-900/30"
+                    : darkMode
+                      ? "text-gray-300"
+                      : "text-gray-600"
+                }`}
+                title={t("header.adminMode")}
+              >
+                <Icon name={isAdminMode ? "ShieldCheck" : "Shield"} size={16} />
+              </Button>
 
               {/* Theme toggle button */}
               <Button
@@ -948,13 +966,27 @@ const Index = () => {
                       <CardHeader className="pb-3">
                         <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
                           <div className="flex-1 w-full">
-                            <CardTitle
-                              className={`text-base sm:text-lg font-semibold mb-2 ${
-                                darkMode ? "text-white" : "text-gray-900"
-                              }`}
-                            >
-                              {listing.title}
-                            </CardTitle>
+                            <div className="flex items-start justify-between">
+                              <CardTitle
+                                className={`text-base sm:text-lg font-semibold mb-2 ${
+                                  darkMode ? "text-white" : "text-gray-900"
+                                }`}
+                              >
+                                {listing.title}
+                              </CardTitle>
+                              {isAdminMode && (
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() =>
+                                    handleDeleteListing(listing.id)
+                                  }
+                                  className="p-2 ml-2"
+                                >
+                                  <Icon name="Trash2" size={14} />
+                                </Button>
+                              )}
+                            </div>
                             <p
                               className={`text-xs sm:text-sm ${
                                 darkMode ? "text-gray-100" : "text-gray-600"
@@ -1067,23 +1099,45 @@ const Index = () => {
                               </div>
                             </div>
 
-                            <Button
-                              size="sm"
-                              className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
-                              onClick={() => handleClick(listing.id)}
-                            >
-                              <Icon
-                                name="MessageCircle"
-                                className="mr-1"
-                                size={14}
-                              />
-                              <span className="hidden sm:inline">
-                                {language === "en" ? "Contact" : "Связаться"}
-                              </span>
-                              <span className="sm:hidden">
-                                {language === "en" ? "Contact" : "Связь"}
-                              </span>
-                            </Button>
+                            <div className="flex items-center space-x-2">
+                              {isAdminMode && (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => handleEditListing(listing)}
+                                  className="text-xs sm:text-sm px-2 sm:px-3"
+                                >
+                                  <Icon
+                                    name="Edit"
+                                    className="mr-1"
+                                    size={14}
+                                  />
+                                  <span className="hidden sm:inline">
+                                    {t("listing.edit")}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {t("listing.edit")}
+                                  </span>
+                                </Button>
+                              )}
+                              <Button
+                                size="sm"
+                                className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
+                                onClick={() => handleClick(listing.id)}
+                              >
+                                <Icon
+                                  name="MessageCircle"
+                                  className="mr-1"
+                                  size={14}
+                                />
+                                <span className="hidden sm:inline">
+                                  {t("listing.contact")}
+                                </span>
+                                <span className="sm:hidden">
+                                  {t("listing.contactShort")}
+                                </span>
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </CardContent>

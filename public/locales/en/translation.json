@@ -8,7 +8,8 @@
     "sortPriceLow": "Price: Low to High",
     "sortPriceHigh": "Price: High to Low",
     "reset": "Reset",
-    "addListing": "Add Listing"
+    "addListing": "Add Listing",
+    "adminMode": "Admin Mode"
   },
   "navigation": {
     "listings": "Listings",
