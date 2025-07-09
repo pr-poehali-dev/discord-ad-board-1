@@ -54,32 +54,73 @@ export function HeaderSection({
               </h1>
             </div>
 
-            <div className="hidden sm:flex items-center space-x-2">
+            <div className="hidden sm:flex items-center space-x-3 ml-8">
               <Button
-                variant={currentView === "listings" ? "default" : "outline"}
+                variant="ghost"
                 size="sm"
                 onClick={() => setCurrentView("listings")}
-                className={
+                className={`relative px-3 py-2 rounded-lg transition-all duration-200 ${
                   currentView === "listings"
-                    ? "bg-[#5865F2] hover:bg-[#4752C4]"
-                    : ""
-                }
+                    ? "bg-[#5865F2] text-white shadow-sm"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
               >
-                <Icon name="Globe" className="mr-1" size={14} />
-                {language === "en" ? "Public" : "Публичные"}
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`p-1 rounded-full ${
+                      currentView === "listings"
+                        ? "bg-white/20"
+                        : "bg-gray-100 dark:bg-gray-700"
+                    }`}
+                  >
+                    <Icon
+                      name="Globe"
+                      size={14}
+                      className={
+                        currentView === "listings"
+                          ? "text-white"
+                          : "text-[#5865F2]"
+                      }
+                    />
+                  </div>
+                  <span className="font-medium text-sm">
+                    {language === "en" ? "Public" : "Публичные"}
+                  </span>
+                </div>
               </Button>
+
               <Button
-                variant={currentView === "myListings" ? "default" : "outline"}
+                variant="ghost"
                 size="sm"
                 onClick={() => setCurrentView("myListings")}
-                className={
+                className={`relative px-3 py-2 rounded-lg transition-all duration-200 ${
                   currentView === "myListings"
-                    ? "bg-[#5865F2] hover:bg-[#4752C4]"
-                    : ""
-                }
+                    ? "bg-[#5865F2] text-white shadow-sm"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
               >
-                <Icon name="User" className="mr-1" size={14} />
-                {language === "en" ? "My Listings" : "Мои объявления"}
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`p-1 rounded-full ${
+                      currentView === "myListings"
+                        ? "bg-white/20"
+                        : "bg-gray-100 dark:bg-gray-700"
+                    }`}
+                  >
+                    <Icon
+                      name="User"
+                      size={14}
+                      className={
+                        currentView === "myListings"
+                          ? "text-white"
+                          : "text-[#5865F2]"
+                      }
+                    />
+                  </div>
+                  <span className="font-medium text-sm">
+                    {language === "en" ? "My Listings" : "Мои объявления"}
+                  </span>
+                </div>
               </Button>
             </div>
           </div>
@@ -163,24 +204,71 @@ export function HeaderSection({
           </div>
         </div>
 
-        <div className="sm:hidden flex items-center justify-center space-x-2 mt-4">
+        <div className="sm:hidden flex items-center justify-center space-x-3 mt-6 px-4">
           <Button
-            variant={currentView === "listings" ? "default" : "outline"}
+            variant="ghost"
             size="sm"
             onClick={() => setCurrentView("listings")}
-            className={`flex-1 ${currentView === "listings" ? "bg-[#5865F2] hover:bg-[#4752C4]" : ""}`}
+            className={`flex-1 px-4 py-3 rounded-xl transition-all duration-200 ${
+              currentView === "listings"
+                ? "bg-[#5865F2] text-white shadow-lg"
+                : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`}
           >
-            <Icon name="Globe" className="mr-1" size={14} />
-            {language === "en" ? "Public" : "Публичные"}
+            <div className="flex items-center justify-center space-x-2">
+              <div
+                className={`p-1.5 rounded-full ${
+                  currentView === "listings"
+                    ? "bg-white/20"
+                    : "bg-gray-100 dark:bg-gray-700"
+                }`}
+              >
+                <Icon
+                  name="Globe"
+                  size={16}
+                  className={
+                    currentView === "listings" ? "text-white" : "text-[#5865F2]"
+                  }
+                />
+              </div>
+              <span className="font-medium text-sm">
+                {language === "en" ? "Public" : "Публичные"}
+              </span>
+            </div>
           </Button>
+
           <Button
-            variant={currentView === "myListings" ? "default" : "outline"}
+            variant="ghost"
             size="sm"
             onClick={() => setCurrentView("myListings")}
-            className={`flex-1 ${currentView === "myListings" ? "bg-[#5865F2] hover:bg-[#4752C4]" : ""}`}
+            className={`flex-1 px-4 py-3 rounded-xl transition-all duration-200 ${
+              currentView === "myListings"
+                ? "bg-[#5865F2] text-white shadow-lg"
+                : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            }`}
           >
-            <Icon name="User" className="mr-1" size={14} />
-            {language === "en" ? "My Listings" : "Мои объявления"}
+            <div className="flex items-center justify-center space-x-2">
+              <div
+                className={`p-1.5 rounded-full ${
+                  currentView === "myListings"
+                    ? "bg-white/20"
+                    : "bg-gray-100 dark:bg-gray-700"
+                }`}
+              >
+                <Icon
+                  name="User"
+                  size={16}
+                  className={
+                    currentView === "myListings"
+                      ? "text-white"
+                      : "text-[#5865F2]"
+                  }
+                />
+              </div>
+              <span className="font-medium text-sm">
+                {language === "en" ? "My Listings" : "Мои объявления"}
+              </span>
+            </div>
           </Button>
         </div>
       </div>
