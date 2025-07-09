@@ -270,12 +270,42 @@ const Index = () => {
 
             <div className="flex items-center space-x-2 sm:space-x-4">
               <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger className="w-16 sm:w-20">
+                <SelectTrigger
+                  className={`w-16 sm:w-20 ${
+                    darkMode
+                      ? "bg-[#36393F] border-gray-600 text-white"
+                      : "bg-white border-gray-300 text-gray-900"
+                  }`}
+                >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en">EN</SelectItem>
-                  <SelectItem value="ru">RU</SelectItem>
+                <SelectContent
+                  className={
+                    darkMode
+                      ? "bg-[#36393F] border-gray-600"
+                      : "bg-white border-gray-300"
+                  }
+                >
+                  <SelectItem
+                    value="en"
+                    className={
+                      darkMode
+                        ? "text-white hover:bg-gray-600"
+                        : "text-gray-900 hover:bg-gray-100"
+                    }
+                  >
+                    EN
+                  </SelectItem>
+                  <SelectItem
+                    value="ru"
+                    className={
+                      darkMode
+                        ? "text-white hover:bg-gray-600"
+                        : "text-gray-900 hover:bg-gray-100"
+                    }
+                  >
+                    RU
+                  </SelectItem>
                 </SelectContent>
               </Select>
 
@@ -382,7 +412,13 @@ const Index = () => {
                           setNewListing({ ...newListing, category: value })
                         }
                       >
-                        <SelectTrigger>
+                        <SelectTrigger
+                          className={
+                            darkMode
+                              ? "bg-[#36393F] border-gray-600 text-white"
+                              : "bg-white border-gray-300 text-gray-900"
+                          }
+                        >
                           <SelectValue
                             placeholder={
                               language === "en"
@@ -391,9 +427,23 @@ const Index = () => {
                             }
                           />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent
+                          className={
+                            darkMode
+                              ? "bg-[#36393F] border-gray-600"
+                              : "bg-white border-gray-300"
+                          }
+                        >
                           {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
+                            <SelectItem
+                              key={category.id}
+                              value={category.id}
+                              className={
+                                darkMode
+                                  ? "text-white hover:bg-gray-600"
+                                  : "text-gray-900 hover:bg-gray-100"
+                              }
+                            >
                               {category.name}
                             </SelectItem>
                           ))}
@@ -429,12 +479,32 @@ const Index = () => {
                             setNewListing({ ...newListing, currency: value })
                           }
                         >
-                          <SelectTrigger>
+                          <SelectTrigger
+                            className={
+                              darkMode
+                                ? "bg-[#36393F] border-gray-600 text-white"
+                                : "bg-white border-gray-300 text-gray-900"
+                            }
+                          >
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent
+                            className={
+                              darkMode
+                                ? "bg-[#36393F] border-gray-600"
+                                : "bg-white border-gray-300"
+                            }
+                          >
                             {currencies.map((currency) => (
-                              <SelectItem key={currency} value={currency}>
+                              <SelectItem
+                                key={currency}
+                                value={currency}
+                                className={
+                                  darkMode
+                                    ? "text-white hover:bg-gray-600"
+                                    : "text-gray-900 hover:bg-gray-100"
+                                }
+                              >
                                 {currency}
                               </SelectItem>
                             ))}
@@ -549,7 +619,13 @@ const Index = () => {
                           setNewListing({ ...newListing, category: value })
                         }
                       >
-                        <SelectTrigger>
+                        <SelectTrigger
+                          className={
+                            darkMode
+                              ? "bg-[#36393F] border-gray-600 text-white"
+                              : "bg-white border-gray-300 text-gray-900"
+                          }
+                        >
                           <SelectValue
                             placeholder={
                               language === "en"
@@ -558,9 +634,23 @@ const Index = () => {
                             }
                           />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent
+                          className={
+                            darkMode
+                              ? "bg-[#36393F] border-gray-600"
+                              : "bg-white border-gray-300"
+                          }
+                        >
                           {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
+                            <SelectItem
+                              key={category.id}
+                              value={category.id}
+                              className={
+                                darkMode
+                                  ? "text-white hover:bg-gray-600"
+                                  : "text-gray-900 hover:bg-gray-100"
+                              }
+                            >
                               {category.name}
                             </SelectItem>
                           ))}
@@ -594,12 +684,32 @@ const Index = () => {
                             setNewListing({ ...newListing, currency: value })
                           }
                         >
-                          <SelectTrigger>
+                          <SelectTrigger
+                            className={
+                              darkMode
+                                ? "bg-[#36393F] border-gray-600 text-white"
+                                : "bg-white border-gray-300 text-gray-900"
+                            }
+                          >
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent
+                            className={
+                              darkMode
+                                ? "bg-[#36393F] border-gray-600"
+                                : "bg-white border-gray-300"
+                            }
+                          >
                             {currencies.map((currency) => (
-                              <SelectItem key={currency} value={currency}>
+                              <SelectItem
+                                key={currency}
+                                value={currency}
+                                className={
+                                  darkMode
+                                    ? "text-white hover:bg-gray-600"
+                                    : "text-gray-900 hover:bg-gray-100"
+                                }
+                              >
                                 {currency}
                               </SelectItem>
                             ))}
@@ -723,21 +833,54 @@ const Index = () => {
                     </Label>
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
                       <Select value={sortBy} onValueChange={setSortBy}>
-                        <SelectTrigger className="w-full sm:w-48">
+                        <SelectTrigger
+                          className={`w-full sm:w-48 ${
+                            darkMode
+                              ? "bg-[#36393F] border-gray-600 text-white"
+                              : "bg-white border-gray-300 text-gray-900"
+                          }`}
+                        >
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="newest">
+                        <SelectContent
+                          className={
+                            darkMode
+                              ? "bg-[#36393F] border-gray-600"
+                              : "bg-white border-gray-300"
+                          }
+                        >
+                          <SelectItem
+                            value="newest"
+                            className={
+                              darkMode
+                                ? "text-white hover:bg-gray-600"
+                                : "text-gray-900 hover:bg-gray-100"
+                            }
+                          >
                             {language === "en"
                               ? "Newest First"
                               : "Сначала новые"}
                           </SelectItem>
-                          <SelectItem value="cheapest">
+                          <SelectItem
+                            value="cheapest"
+                            className={
+                              darkMode
+                                ? "text-white hover:bg-gray-600"
+                                : "text-gray-900 hover:bg-gray-100"
+                            }
+                          >
                             {language === "en"
                               ? "Cheapest First"
                               : "Сначала дешёвые"}
                           </SelectItem>
-                          <SelectItem value="expensive">
+                          <SelectItem
+                            value="expensive"
+                            className={
+                              darkMode
+                                ? "text-white hover:bg-gray-600"
+                                : "text-gray-900 hover:bg-gray-100"
+                            }
+                          >
                             {language === "en"
                               ? "Most Expensive"
                               : "Сначала дорогие"}
@@ -748,7 +891,11 @@ const Index = () => {
                       <Button
                         variant="outline"
                         onClick={resetFilters}
-                        className="flex items-center justify-center space-x-2 w-full sm:w-auto"
+                        className={`flex items-center justify-center space-x-2 w-full sm:w-auto ${
+                          darkMode
+                            ? "bg-[#36393F] border-gray-600 text-white hover:bg-gray-600"
+                            : "bg-white border-gray-300 text-gray-900 hover:bg-gray-100"
+                        }`}
                       >
                         <Icon name="RotateCcw" size={16} />
                         <span>{language === "en" ? "Reset" : "Сброс"}</span>
@@ -1119,7 +1266,13 @@ const Index = () => {
                   setEditListing({ ...editListing, category: value })
                 }
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  className={
+                    darkMode
+                      ? "bg-[#36393F] border-gray-600 text-white"
+                      : "bg-white border-gray-300 text-gray-900"
+                  }
+                >
                   <SelectValue
                     placeholder={
                       language === "en"
@@ -1128,9 +1281,23 @@ const Index = () => {
                     }
                   />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent
+                  className={
+                    darkMode
+                      ? "bg-[#36393F] border-gray-600"
+                      : "bg-white border-gray-300"
+                  }
+                >
                   {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id}>
+                    <SelectItem
+                      key={category.id}
+                      value={category.id}
+                      className={
+                        darkMode
+                          ? "text-white hover:bg-gray-600"
+                          : "text-gray-900 hover:bg-gray-100"
+                      }
+                    >
                       {category.name}
                     </SelectItem>
                   ))}
@@ -1161,12 +1328,32 @@ const Index = () => {
                     setEditListing({ ...editListing, currency: value })
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger
+                    className={
+                      darkMode
+                        ? "bg-[#36393F] border-gray-600 text-white"
+                        : "bg-white border-gray-300 text-gray-900"
+                    }
+                  >
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent
+                    className={
+                      darkMode
+                        ? "bg-[#36393F] border-gray-600"
+                        : "bg-white border-gray-300"
+                    }
+                  >
                     {currencies.map((currency) => (
-                      <SelectItem key={currency} value={currency}>
+                      <SelectItem
+                        key={currency}
+                        value={currency}
+                        className={
+                          darkMode
+                            ? "text-white hover:bg-gray-600"
+                            : "text-gray-900 hover:bg-gray-100"
+                        }
+                      >
                         {currency}
                       </SelectItem>
                     ))}
