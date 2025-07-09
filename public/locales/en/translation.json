@@ -1,0 +1,58 @@
+{
+  "header": {
+    "title": "Discord Ads Board",
+    "language": "Language",
+    "sortBy": "Sort by",
+    "sortNewest": "Newest",
+    "sortOldest": "Oldest",
+    "sortPriceLow": "Price: Low to High",
+    "sortPriceHigh": "Price: High to Low",
+    "reset": "Reset",
+    "addListing": "Add Listing"
+  },
+  "navigation": {
+    "listings": "Listings",
+    "profile": "My Listings"
+  },
+  "filters": {
+    "categories": "Categories",
+    "currencies": "Currencies"
+  },
+  "listing": {
+    "title": "Title",
+    "description": "Description",
+    "category": "Category",
+    "categoryPlaceholder": "Gaming, IT, Finance",
+    "price": "Price",
+    "currency": "Currency",
+    "serverLink": "Server Link",
+    "serverLinkPlaceholder": "https://discord.gg/example",
+    "views": "Views",
+    "clicks": "Clicks",
+    "members": "Members",
+    "contact": "Contact",
+    "contactShort": "Contact",
+    "addTitle": "Add New Listing",
+    "editTitle": "Edit Listing",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "justNow": "Just now",
+    "hoursAgo": "{{count}} hours ago",
+    "ago": "ago"
+  },
+  "categories": {
+    "gaming": "Gaming",
+    "it": "IT",
+    "finance": "Finance",
+    "education": "Education",
+    "music": "Music"
+  },
+  "messages": {
+    "noListings": "No listings found. Try adjusting your filters or",
+    "addFirst": "add the first listing",
+    "noMyListings": "You haven't created any listings yet.",
+    "createFirst": "Create your first listing"
+  }
+}

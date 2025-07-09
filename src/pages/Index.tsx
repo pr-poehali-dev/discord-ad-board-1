@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -48,7 +49,8 @@ interface Listing {
 }
 
 const Index = () => {
-  const [language, setLanguage] = useState("en");
+  const { t, i18n } = useTranslation();
+  const [language, setLanguage] = useState(i18n.language || "en");
   const [darkMode, setDarkMode] = useState(false);
   const [currentView, setCurrentView] = useState("listings");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -78,11 +80,11 @@ const Index = () => {
   });
 
   const categories = [
-    { id: "gaming", name: language === "en" ? "Gaming" : "Игры" },
-    { id: "finance", name: language === "en" ? "Finance" : "Финансы" },
-    { id: "education", name: language === "en" ? "Education" : "Образование" },
-    { id: "music", name: language === "en" ? "Music" : "Музыка" },
-    { id: "it", name: language === "en" ? "IT" : "ИТ" },
+    { id: "gaming", name: t("categories.gaming") },
+    { id: "finance", name: t("categories.finance") },
+    { id: "education", name: t("categories.education") },
+    { id: "music", name: t("categories.music") },
+    { id: "it", name: t("categories.it") },
   ];
 
   const currencies = ["USD", "EUR", "RUB", "LTC"];
@@ -257,6 +259,11 @@ const Index = () => {
     );
   };
 
+  const handleLanguageChange = (lang: string) => {
+    setLanguage(lang);
+    i18n.changeLanguage(lang);
+  };
+
   return (
     <div
       className={`min-h-screen transition-colors duration-300 ${
@@ -279,13 +286,13 @@ const Index = () => {
                   size={24}
                 />
                 <h1 className="text-lg sm:text-2xl font-bold">
-                  Discord Ads Board
+                  {t("header.title")}
                 </h1>
               </div>
             </div>
 
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <Select value={language} onValueChange={setLanguage}>
+              <Select value={language} onValueChange={handleLanguageChange}>
                 <SelectTrigger
                   className={`w-16 sm:w-20 ${
                     darkMode
@@ -558,7 +565,7 @@ const Index = () => {
                 <DialogTrigger asChild>
                   <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white hidden sm:flex">
                     <Icon name="Plus" className="mr-2" size={16} />
-                    {language === "en" ? "Add Listing" : "Добавить объявление"}
+                    {t("header.addListing")}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
@@ -774,7 +781,7 @@ const Index = () => {
               >
                 <Icon name="List" size={16} />
                 <span className="text-xs sm:text-sm">
-                  {language === "en" ? "Listings" : "Объявления"}
+                  {t("navigation.listings")}
                 </span>
               </TabsTrigger>
               <TabsTrigger
@@ -783,7 +790,7 @@ const Index = () => {
               >
                 <Icon name="User" size={16} />
                 <span className="text-xs sm:text-sm">
-                  {language === "en" ? "My Listings" : "Мои объявления"}
+                  {t("navigation.profile")}
                 </span>
               </TabsTrigger>
             </TabsList>
@@ -794,7 +801,7 @@ const Index = () => {
                 <div className="space-y-4 sm:space-y-0 sm:flex sm:flex-wrap sm:gap-4">
                   <div className="w-full sm:flex-1 sm:min-w-64">
                     <Label className="text-sm font-medium mb-2 block">
-                      {language === "en" ? "Categories" : "Категории"}
+                      {t("filters.categories")}
                     </Label>
                     <div className="flex flex-wrap gap-2">
                       {categories.map((category) => (
@@ -919,7 +926,7 @@ const Index = () => {
                         }`}
                       >
                         <Icon name="RotateCcw" size={16} />
-                        <span>{language === "en" ? "Reset" : "Сброс"}</span>
+                        <span>{t("header.reset")}</span>
                       </Button>
                     </div>
                   </div>

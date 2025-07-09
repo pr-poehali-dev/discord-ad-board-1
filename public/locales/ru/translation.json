@@ -1,0 +1,58 @@
+{
+  "header": {
+    "title": "Доска объявлений Discord",
+    "language": "Язык",
+    "sortBy": "Сортировать по",
+    "sortNewest": "Новые",
+    "sortOldest": "Старые",
+    "sortPriceLow": "Цена: по возрастанию",
+    "sortPriceHigh": "Цена: по убыванию",
+    "reset": "Сбросить",
+    "addListing": "Добавить объявление"
+  },
+  "navigation": {
+    "listings": "Объявления",
+    "profile": "Мои объявления"
+  },
+  "filters": {
+    "categories": "Категории",
+    "currencies": "Валюты"
+  },
+  "listing": {
+    "title": "Заголовок",
+    "description": "Описание",
+    "category": "Категория",
+    "categoryPlaceholder": "Игры, ИТ, Финансы",
+    "price": "Цена",
+    "currency": "Валюта",
+    "serverLink": "Ссылка на сервер",
+    "serverLinkPlaceholder": "https://discord.gg/example",
+    "views": "Просмотры",
+    "clicks": "Клики",
+    "members": "Участники",
+    "contact": "Связаться",
+    "contactShort": "Связь",
+    "addTitle": "Добавить объявление",
+    "editTitle": "Редактировать объявление",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "justNow": "Только что",
+    "hoursAgo": "{{count}} часа назад",
+    "ago": "назад"
+  },
+  "categories": {
+    "gaming": "Игры",
+    "it": "ИТ",
+    "finance": "Финансы",
+    "education": "Образование",
+    "music": "Музыка"
+  },
+  "messages": {
+    "noListings": "Объявления не найдены. Попробуйте изменить фильтры или",
+    "addFirst": "добавьте первое объявление",
+    "noMyListings": "Вы еще не создали ни одного объявления.",
+    "createFirst": "Создайте свое первое объявление"
+  }
+}
