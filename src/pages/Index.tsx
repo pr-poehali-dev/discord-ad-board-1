@@ -312,12 +312,33 @@ const Index = () => {
               </Select>
 
               <div className="flex items-center space-x-1 sm:space-x-2">
+                {/* Desktop icons - outside the switch */}
                 <Icon
                   name="Sun"
                   size={16}
                   className={`hidden sm:block ${darkMode ? "text-gray-300" : "text-gray-600"}`}
                 />
-                <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+
+                {/* Switch with icons inside for mobile */}
+                <div className="relative">
+                  <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+                  {/* Icons inside the switch circle - visible on mobile */}
+                  <div className="absolute inset-y-0 left-0 flex items-center justify-center w-5 h-5 ml-0.5 sm:hidden pointer-events-none">
+                    <Icon
+                      name="Sun"
+                      size={10}
+                      className={`transition-opacity duration-200 ${darkMode ? "opacity-0" : "opacity-100"} text-gray-600`}
+                    />
+                  </div>
+                  <div className="absolute inset-y-0 right-0 flex items-center justify-center w-5 h-5 mr-0.5 sm:hidden pointer-events-none">
+                    <Icon
+                      name="Moon"
+                      size={10}
+                      className={`transition-opacity duration-200 ${darkMode ? "opacity-100" : "opacity-0"} text-gray-200`}
+                    />
+                  </div>
+                </div>
+
                 <Icon
                   name="Moon"
                   size={16}
