@@ -311,41 +311,21 @@ const Index = () => {
                 </SelectContent>
               </Select>
 
-              <div className="flex items-center space-x-1 sm:space-x-2">
-                {/* Desktop icons - outside the switch */}
+              {/* Theme toggle button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setDarkMode(!darkMode)}
+                className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors ${
+                  darkMode ? "text-gray-300" : "text-gray-600"
+                }`}
+              >
                 <Icon
-                  name="Sun"
+                  name={darkMode ? "Sun" : "Moon"}
                   size={16}
-                  className={`hidden sm:block ${darkMode ? "text-gray-300" : "text-gray-600"}`}
+                  className="transition-all duration-200"
                 />
-
-                {/* Switch with icons inside for mobile */}
-                <div className="relative">
-                  <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-                  {/* Icons inside the switch circle - visible on mobile */}
-                  {/* Single container that moves with the switch thumb */}
-                  <div
-                    className={`absolute top-1/2 left-0.5 -translate-y-1/2 flex items-center justify-center w-5 h-5 sm:hidden pointer-events-none transition-transform duration-200 ${darkMode ? "translate-x-5" : "translate-x-0"}`}
-                  >
-                    <Icon
-                      name="Sun"
-                      size={10}
-                      className={`absolute transition-opacity duration-200 ${darkMode ? "opacity-0" : "opacity-100"} text-gray-600`}
-                    />
-                    <Icon
-                      name="Moon"
-                      size={10}
-                      className={`absolute transition-opacity duration-200 ${darkMode ? "opacity-100" : "opacity-0"} text-gray-200`}
-                    />
-                  </div>
-                </div>
-
-                <Icon
-                  name="Moon"
-                  size={16}
-                  className={`hidden sm:block ${darkMode ? "text-gray-300" : "text-gray-600"}`}
-                />
-              </div>
+              </Button>
 
               {/* Mobile Add Button */}
               <Sheet
