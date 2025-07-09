@@ -323,24 +323,19 @@ const Index = () => {
                 <div className="relative">
                   <Switch checked={darkMode} onCheckedChange={setDarkMode} />
                   {/* Icons inside the switch circle - visible on mobile */}
-                  {/* Sun icon - centered in left position when light mode */}
+                  {/* Single container that moves with the switch thumb */}
                   <div
-                    className={`absolute top-1/2 left-0.5 -translate-y-1/2 flex items-center justify-center w-5 h-5 sm:hidden pointer-events-none transition-all duration-200 ${darkMode ? "translate-x-5" : "translate-x-0"}`}
+                    className={`absolute top-1/2 left-0.5 -translate-y-1/2 flex items-center justify-center w-5 h-5 sm:hidden pointer-events-none transition-transform duration-200 ${darkMode ? "translate-x-5" : "translate-x-0"}`}
                   >
                     <Icon
                       name="Sun"
                       size={10}
-                      className={`transition-opacity duration-200 ${darkMode ? "opacity-0" : "opacity-100"} text-gray-600`}
+                      className={`absolute transition-opacity duration-200 ${darkMode ? "opacity-0" : "opacity-100"} text-gray-600`}
                     />
-                  </div>
-                  {/* Moon icon - centered in right position when dark mode */}
-                  <div
-                    className={`absolute top-1/2 left-0.5 -translate-y-1/2 flex items-center justify-center w-5 h-5 sm:hidden pointer-events-none transition-all duration-200 ${darkMode ? "translate-x-5" : "translate-x-0"}`}
-                  >
                     <Icon
                       name="Moon"
                       size={10}
-                      className={`transition-opacity duration-200 ${darkMode ? "opacity-100" : "opacity-0"} text-gray-200`}
+                      className={`absolute transition-opacity duration-200 ${darkMode ? "opacity-100" : "opacity-0"} text-gray-200`}
                     />
                   </div>
                 </div>
