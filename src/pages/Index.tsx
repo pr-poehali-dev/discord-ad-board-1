@@ -53,7 +53,8 @@ const Index = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedCurrencies, setSelectedCurrencies] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState("newest");
-  const [isAddListingOpen, setIsAddListingOpen] = useState(false);
+  const [isAddListingMobileOpen, setIsAddListingMobileOpen] = useState(false);
+  const [isAddListingDesktopOpen, setIsAddListingDesktopOpen] = useState(false);
   const [isEditListingOpen, setIsEditListingOpen] = useState(false);
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
 
@@ -184,7 +185,8 @@ const Index = () => {
       currency: "USD",
       serverLink: "",
     });
-    setIsAddListingOpen(false);
+    setIsAddListingMobileOpen(false);
+    setIsAddListingDesktopOpen(false);
   };
 
   const handleDeleteListing = (id: string) => {
@@ -324,7 +326,10 @@ const Index = () => {
               </div>
 
               {/* Mobile Add Button */}
-              <Sheet open={isAddListingOpen} onOpenChange={setIsAddListingOpen}>
+              <Sheet
+                open={isAddListingMobileOpen}
+                onOpenChange={setIsAddListingMobileOpen}
+              >
                 <SheetTrigger asChild>
                   <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white sm:hidden p-2">
                     <Icon name="Plus" size={16} />
@@ -531,8 +536,8 @@ const Index = () => {
 
               {/* Desktop Add Button */}
               <Dialog
-                open={isAddListingOpen}
-                onOpenChange={setIsAddListingOpen}
+                open={isAddListingDesktopOpen}
+                onOpenChange={setIsAddListingDesktopOpen}
               >
                 <DialogTrigger asChild>
                   <Button className="bg-[#5865F2] hover:bg-[#4752C4] text-white hidden sm:flex">
