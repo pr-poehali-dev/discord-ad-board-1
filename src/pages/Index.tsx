@@ -927,7 +927,11 @@ const Index = () => {
                       <CardHeader className="pb-3">
                         <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
                           <div className="flex-1 w-full">
-                            <CardTitle className="text-base sm:text-lg font-semibold mb-2">
+                            <CardTitle
+                              className={`text-base sm:text-lg font-semibold mb-2 ${
+                                darkMode ? "text-white" : "text-gray-900"
+                              }`}
+                            >
                               {listing.title}
                             </CardTitle>
                             <p
@@ -1080,7 +1084,11 @@ const Index = () => {
                         <CardHeader className="pb-3">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <CardTitle className="text-base sm:text-lg font-semibold mb-2">
+                              <CardTitle
+                                className={`text-base sm:text-lg font-semibold mb-2 ${
+                                  darkMode ? "text-white" : "text-gray-900"
+                                }`}
+                              >
                                 {listing.title}
                               </CardTitle>
                               <p
