@@ -9,7 +9,10 @@
     "sortPriceHigh": "Цена: по убыванию",
     "reset": "Сбросить",
     "addListing": "Добавить объявление",
-    "adminMode": "Режим администратора"
+    "adminMode": "Режим администратора",
+    "viewMode": "Режим просмотра",
+    "gallery": "Галерея",
+    "list": "Список"
   },
   "navigation": {
     "listings": "Объявления",

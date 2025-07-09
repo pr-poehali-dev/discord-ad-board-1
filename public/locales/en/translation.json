@@ -9,7 +9,10 @@
     "sortPriceHigh": "Price: High to Low",
     "reset": "Reset",
     "addListing": "Add Listing",
-    "adminMode": "Admin Mode"
+    "adminMode": "Admin Mode",
+    "viewMode": "View Mode",
+    "gallery": "Gallery",
+    "list": "List"
   },
   "navigation": {
     "listings": "Listings",

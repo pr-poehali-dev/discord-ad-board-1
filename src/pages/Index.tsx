@@ -62,6 +62,7 @@ const Index = () => {
   const [isAddListingDesktopOpen, setIsAddListingDesktopOpen] = useState(false);
   const [isEditListingOpen, setIsEditListingOpen] = useState(false);
   const [editingListing, setEditingListing] = useState<Listing | null>(null);
+  const [viewMode, setViewMode] = useState<"gallery" | "list">("gallery");
 
   const [newListing, setNewListing] = useState({
     title: "",
@@ -964,6 +965,39 @@ const Index = () => {
                         <Icon name="RotateCcw" size={16} />
                         <span>{t("header.reset")}</span>
                       </Button>
+
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant={
+                            viewMode === "gallery" ? "default" : "outline"
+                          }
+                          onClick={() => setViewMode("gallery")}
+                          className={`p-2 ${
+                            viewMode === "gallery"
+                              ? "bg-[#5865F2] text-white hover:bg-[#4752C4]"
+                              : darkMode
+                                ? "bg-[#36393F] border-gray-600 text-white hover:bg-gray-600"
+                                : "bg-white border-gray-300 text-gray-900 hover:bg-gray-100"
+                          }`}
+                          title={t("header.gallery")}
+                        >
+                          <Icon name="Grid3x3" size={16} />
+                        </Button>
+                        <Button
+                          variant={viewMode === "list" ? "default" : "outline"}
+                          onClick={() => setViewMode("list")}
+                          className={`p-2 ${
+                            viewMode === "list"
+                              ? "bg-[#5865F2] text-white hover:bg-[#4752C4]"
+                              : darkMode
+                                ? "bg-[#36393F] border-gray-600 text-white hover:bg-gray-600"
+                                : "bg-white border-gray-300 text-gray-900 hover:bg-gray-100"
+                          }`}
+                          title={t("header.list")}
+                        >
+                          <Icon name="List" size={16} />
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -971,266 +1005,58 @@ const Index = () => {
 
               {/* Listings */}
               <div className="pb-8">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {filteredListings.map((listing) => (
-                    <Card
-                      key={listing.id}
-                      className={`transition-all duration-300 hover:shadow-lg ${
-                        darkMode
-                          ? "bg-[#36393F] border-gray-600"
-                          : "bg-white border-gray-200"
-                      }`}
-                    >
-                      <CardHeader className="pb-3">
-                        <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
-                          <div className="flex-1 w-full">
-                            <div className="flex items-start justify-between">
-                              <CardTitle
-                                className={`text-base sm:text-lg font-semibold mb-2 ${
-                                  darkMode ? "text-white" : "text-gray-900"
-                                }`}
-                              >
-                                {listing.title}
-                              </CardTitle>
-                              {isAdminMode && (
-                                <div className="flex items-center space-x-2 ml-2">
-                                  <Checkbox
-                                    id={`pin-${listing.id}`}
-                                    checked={listing.isPinned || false}
-                                    onCheckedChange={() =>
-                                      handleTogglePin(listing.id)
-                                    }
-                                    className="data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
-                                  />
-                                  <label
-                                    htmlFor={`pin-${listing.id}`}
-                                    className="text-xs text-gray-600 dark:text-gray-400 cursor-pointer"
-                                    title={t("listing.pin")}
-                                  >
-                                    <Icon name="Pin" size={12} />
-                                  </label>
-                                  <Button
-                                    size="sm"
-                                    variant="destructive"
-                                    onClick={() =>
-                                      handleDeleteListing(listing.id)
-                                    }
-                                    className="p-2"
-                                  >
-                                    <Icon name="Trash2" size={14} />
-                                  </Button>
-                                </div>
-                              )}
-                            </div>
-                            <p
-                              className={`text-xs sm:text-sm ${
-                                darkMode ? "text-gray-100" : "text-gray-600"
-                              }`}
-                            >
-                              {listing.description}
-                            </p>
-                          </div>
-                          <div className="text-right w-full sm:w-auto">
-                            <div className="text-lg sm:text-xl font-bold text-[#5865F2]">
-                              {listing.price.toLocaleString()}{" "}
-                              {listing.currency}
-                            </div>
-                            <div
-                              className={`text-xs ${
-                                darkMode ? "text-gray-300" : "text-gray-500"
-                              }`}
-                            >
-                              {listing.timeAgo}
-                            </div>
-                            {listing.isPinned && (
-                              <Badge
-                                variant="secondary"
-                                className="mt-1 text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
-                              >
-                                <Icon name="Pin" size={10} className="mr-1" />
-                                {t("listing.pinned")}
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-2">
-                              <Icon
-                                name="MessageSquare"
-                                className="text-[#5865F2]"
-                                size={16}
-                              />
-                              <span
-                                className={`text-xs sm:text-sm font-medium cursor-pointer hover:text-[#5865F2] transition-colors ${
-                                  darkMode ? "text-gray-100" : "text-gray-900"
-                                }`}
-                                onClick={() => {
-                                  handleClick(listing.id);
-                                  window.open(listing.serverLink, "_blank");
-                                }}
-                              >
-                                {listing.serverName}
-                              </span>
-                            </div>
-                            <Badge
-                              variant="secondary"
-                              className={`text-xs ${
-                                darkMode
-                                  ? "bg-gray-600 text-gray-100"
-                                  : "bg-gray-200 text-gray-800"
-                              }`}
-                            >
-                              {
-                                categories.find(
-                                  (cat) => cat.id === listing.category,
-                                )?.name
-                              }
-                            </Badge>
-                          </div>
-
-                          <div className="flex items-center justify-between text-xs sm:text-sm">
-                            <div className="flex items-center space-x-2 sm:space-x-4">
-                              <div className="flex items-center space-x-1">
-                                <Icon
-                                  name="Users"
-                                  size={14}
-                                  className={
-                                    darkMode ? "text-gray-300" : "text-gray-600"
-                                  }
-                                />
-                                <span
-                                  className={
-                                    darkMode ? "text-gray-200" : "text-gray-700"
-                                  }
-                                >
-                                  {listing.members.toLocaleString()}
-                                </span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Icon
-                                  name="Eye"
-                                  size={14}
-                                  className={
-                                    darkMode ? "text-gray-300" : "text-gray-600"
-                                  }
-                                />
-                                <span
-                                  className={
-                                    darkMode ? "text-gray-200" : "text-gray-700"
-                                  }
-                                >
-                                  {listing.views}
-                                </span>
-                              </div>
-                              <div className="flex items-center space-x-1">
-                                <Icon
-                                  name="MousePointerClick"
-                                  size={14}
-                                  className={
-                                    darkMode ? "text-gray-300" : "text-gray-600"
-                                  }
-                                />
-                                <span
-                                  className={
-                                    darkMode ? "text-gray-200" : "text-gray-700"
-                                  }
-                                >
-                                  {listing.clicks}
-                                </span>
-                              </div>
-                            </div>
-
-                            <div className="flex items-center space-x-2">
-                              {isAdminMode && (
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleEditListing(listing)}
-                                  className="text-xs sm:text-sm px-2 sm:px-3"
-                                >
-                                  <Icon
-                                    name="Edit"
-                                    className="mr-1"
-                                    size={14}
-                                  />
-                                  <span className="hidden sm:inline">
-                                    {t("listing.edit")}
-                                  </span>
-                                  <span className="sm:hidden">
-                                    {t("listing.edit")}
-                                  </span>
-                                </Button>
-                              )}
-                              <Button
-                                size="sm"
-                                className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
-                                onClick={() => handleClick(listing.id)}
-                              >
-                                <Icon
-                                  name="MessageCircle"
-                                  className="mr-1"
-                                  size={14}
-                                />
-                                <span className="hidden sm:inline">
-                                  {t("listing.contact")}
-                                </span>
-                                <span className="sm:hidden">
-                                  {t("listing.contactShort")}
-                                </span>
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="profile" className="mt-0">
-              <div className="py-6">
-                <h2 className="text-xl font-semibold mb-4">
-                  {language === "en" ? "My Listings" : "Мои объявления"}
-                </h2>
-
-                {userListings.length === 0 ? (
-                  <div
-                    className={`text-center py-8 ${
-                      darkMode ? "text-gray-300" : "text-gray-500"
-                    }`}
-                  >
-                    <Icon name="FileText" size={48} className="mx-auto mb-4" />
-                    <p>
-                      {language === "en"
-                        ? "No listings yet"
-                        : "Пока нет объявлений"}
-                    </p>
-                  </div>
-                ) : (
+                {viewMode === "gallery" ? (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {userListings.map((listing) => (
+                    {filteredListings.map((listing) => (
                       <Card
                         key={listing.id}
-                        className={`transition-all duration-300 ${
+                        className={`transition-all duration-300 hover:shadow-lg ${
                           darkMode
                             ? "bg-[#36393F] border-gray-600"
                             : "bg-white border-gray-200"
                         }`}
                       >
                         <CardHeader className="pb-3">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <CardTitle
-                                className={`text-base sm:text-lg font-semibold mb-2 ${
-                                  darkMode ? "text-white" : "text-gray-900"
-                                }`}
-                              >
-                                {listing.title}
-                              </CardTitle>
+                          <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
+                            <div className="flex-1 w-full">
+                              <div className="flex items-start justify-between">
+                                <CardTitle
+                                  className={`text-base sm:text-lg font-semibold mb-2 ${
+                                    darkMode ? "text-white" : "text-gray-900"
+                                  }`}
+                                >
+                                  {listing.title}
+                                </CardTitle>
+                                {isAdminMode && (
+                                  <div className="flex items-center space-x-2 ml-2">
+                                    <Checkbox
+                                      id={`pin-${listing.id}`}
+                                      checked={listing.isPinned || false}
+                                      onCheckedChange={() =>
+                                        handleTogglePin(listing.id)
+                                      }
+                                      className="data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
+                                    />
+                                    <label
+                                      htmlFor={`pin-${listing.id}`}
+                                      className="text-xs text-gray-600 dark:text-gray-400 cursor-pointer"
+                                      title={t("listing.pin")}
+                                    >
+                                      <Icon name="Pin" size={12} />
+                                    </label>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() =>
+                                        handleDeleteListing(listing.id)
+                                      }
+                                      className="p-2"
+                                    >
+                                      <Icon name="Trash2" size={14} />
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
                               <p
                                 className={`text-xs sm:text-sm ${
                                   darkMode ? "text-gray-100" : "text-gray-600"
@@ -1239,22 +1065,50 @@ const Index = () => {
                                 {listing.description}
                               </p>
                             </div>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleDeleteListing(listing.id)}
-                              className="p-2"
-                            >
-                              <Icon name="Trash2" size={14} />
-                            </Button>
+                            <div className="text-right w-full sm:w-auto">
+                              <div className="text-lg sm:text-xl font-bold text-[#5865F2]">
+                                {listing.price.toLocaleString()}{" "}
+                                {listing.currency}
+                              </div>
+                              <div
+                                className={`text-xs ${
+                                  darkMode ? "text-gray-300" : "text-gray-500"
+                                }`}
+                              >
+                                {listing.timeAgo}
+                              </div>
+                              {listing.isPinned && (
+                                <Badge
+                                  variant="secondary"
+                                  className="mt-1 text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
+                                >
+                                  <Icon name="Pin" size={10} className="mr-1" />
+                                  {t("listing.pinned")}
+                                </Badge>
+                              )}
+                            </div>
                           </div>
                         </CardHeader>
                         <CardContent>
                           <div className="space-y-3">
                             <div className="flex items-center justify-between">
-                              <div className="text-lg sm:text-xl font-bold text-[#5865F2]">
-                                {listing.price.toLocaleString()}{" "}
-                                {listing.currency}
+                              <div className="flex items-center space-x-2">
+                                <Icon
+                                  name="MessageSquare"
+                                  className="text-[#5865F2]"
+                                  size={16}
+                                />
+                                <span
+                                  className={`text-xs sm:text-sm font-medium cursor-pointer hover:text-[#5865F2] transition-colors ${
+                                    darkMode ? "text-gray-100" : "text-gray-900"
+                                  }`}
+                                  onClick={() => {
+                                    handleClick(listing.id);
+                                    window.open(listing.serverLink, "_blank");
+                                  }}
+                                >
+                                  {listing.serverName}
+                                </span>
                               </div>
                               <Badge
                                 variant="secondary"
@@ -1336,26 +1190,554 @@ const Index = () => {
                                 </div>
                               </div>
 
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => handleEditListing(listing)}
-                                className="text-xs sm:text-sm px-2 sm:px-3"
-                              >
-                                <Icon name="Edit" className="mr-1" size={14} />
-                                <span className="hidden sm:inline">
-                                  {language === "en" ? "Edit" : "Редактировать"}
-                                </span>
-                                <span className="sm:hidden">
-                                  {language === "en" ? "Edit" : "Ред."}
-                                </span>
-                              </Button>
+                              <div className="flex items-center space-x-2">
+                                {isAdminMode && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleEditListing(listing)}
+                                    className="text-xs sm:text-sm px-2 sm:px-3"
+                                  >
+                                    <Icon
+                                      name="Edit"
+                                      className="mr-1"
+                                      size={14}
+                                    />
+                                    <span className="hidden sm:inline">
+                                      {t("listing.edit")}
+                                    </span>
+                                    <span className="sm:hidden">
+                                      {t("listing.edit")}
+                                    </span>
+                                  </Button>
+                                )}
+                                <Button
+                                  size="sm"
+                                  className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
+                                  onClick={() => handleClick(listing.id)}
+                                >
+                                  <Icon
+                                    name="MessageCircle"
+                                    className="mr-1"
+                                    size={14}
+                                  />
+                                  <span className="hidden sm:inline">
+                                    {t("listing.contact")}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {t("listing.contactShort")}
+                                  </span>
+                                </Button>
+                              </div>
                             </div>
                           </div>
                         </CardContent>
                       </Card>
                     ))}
                   </div>
+                ) : (
+                  <div className="space-y-3">
+                    {filteredListings.map((listing) => (
+                      <Card
+                        key={listing.id}
+                        className={`transition-all duration-300 hover:shadow-lg ${
+                          darkMode
+                            ? "bg-[#36393F] border-gray-600"
+                            : "bg-white border-gray-200"
+                        }`}
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <CardTitle
+                                className={`text-lg font-semibold mb-2 ${
+                                  darkMode ? "text-white" : "text-gray-900"
+                                }`}
+                              >
+                                {listing.title}
+                              </CardTitle>
+                              <p
+                                className={`text-sm mb-3 ${
+                                  darkMode ? "text-gray-300" : "text-gray-600"
+                                }`}
+                              >
+                                {listing.description}
+                              </p>
+                              <div className="flex items-center space-x-6 text-sm">
+                                <div className="flex items-center space-x-2">
+                                  <Icon
+                                    name="MessageSquare"
+                                    className="text-[#5865F2]"
+                                    size={16}
+                                  />
+                                  <span
+                                    className={`font-medium cursor-pointer hover:text-[#5865F2] transition-colors ${
+                                      darkMode
+                                        ? "text-gray-100"
+                                        : "text-gray-900"
+                                    }`}
+                                    onClick={() => {
+                                      handleClick(listing.id);
+                                      window.open(listing.serverLink, "_blank");
+                                    }}
+                                  >
+                                    {listing.serverName}
+                                  </span>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Icon
+                                    name="Users"
+                                    size={14}
+                                    className={
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-600"
+                                    }
+                                  />
+                                  <span
+                                    className={
+                                      darkMode
+                                        ? "text-gray-200"
+                                        : "text-gray-700"
+                                    }
+                                  >
+                                    {listing.members.toLocaleString()}
+                                  </span>
+                                </div>
+                                <Badge
+                                  variant="secondary"
+                                  className={`text-xs ${
+                                    darkMode
+                                      ? "bg-gray-600 text-gray-100"
+                                      : "bg-gray-200 text-gray-800"
+                                  }`}
+                                >
+                                  {
+                                    categories.find(
+                                      (cat) => cat.id === listing.category,
+                                    )?.name
+                                  }
+                                </Badge>
+                                <div className="flex items-center space-x-1">
+                                  <Icon
+                                    name="Eye"
+                                    size={14}
+                                    className={
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-600"
+                                    }
+                                  />
+                                  <span
+                                    className={
+                                      darkMode
+                                        ? "text-gray-200"
+                                        : "text-gray-700"
+                                    }
+                                  >
+                                    {listing.views}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="text-right flex flex-col items-end">
+                              <div className="text-xl font-bold text-[#5865F2] mb-1">
+                                {listing.price.toLocaleString()}{" "}
+                                {listing.currency}
+                              </div>
+                              <div
+                                className={`text-xs mb-2 ${
+                                  darkMode ? "text-gray-300" : "text-gray-500"
+                                }`}
+                              >
+                                {listing.timeAgo}
+                              </div>
+                              {listing.isPinned && (
+                                <Badge
+                                  variant="secondary"
+                                  className="mb-2 text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
+                                >
+                                  <Icon name="Pin" size={10} className="mr-1" />
+                                  {t("listing.pinned")}
+                                </Badge>
+                              )}
+                              <div className="flex items-center space-x-2">
+                                {isAdminMode && (
+                                  <>
+                                    <Checkbox
+                                      id={`pin-${listing.id}`}
+                                      checked={listing.isPinned || false}
+                                      onCheckedChange={() =>
+                                        handleTogglePin(listing.id)
+                                      }
+                                      className="data-[state=checked]:bg-yellow-500 data-[state=checked]:border-yellow-500"
+                                    />
+                                    <label
+                                      htmlFor={`pin-${listing.id}`}
+                                      className="text-xs text-gray-600 dark:text-gray-400 cursor-pointer"
+                                      title={t("listing.pin")}
+                                    >
+                                      <Icon name="Pin" size={12} />
+                                    </label>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() =>
+                                        handleDeleteListing(listing.id)
+                                      }
+                                      className="p-2"
+                                    >
+                                      <Icon name="Trash2" size={14} />
+                                    </Button>
+                                  </>
+                                )}
+                                <Button
+                                  size="sm"
+                                  className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-sm px-3"
+                                  onClick={() => handleClick(listing.id)}
+                                >
+                                  <Icon
+                                    name="MessageCircle"
+                                    className="mr-1"
+                                    size={14}
+                                  />
+                                  {t("listing.contact")}
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="profile" className="mt-0">
+              <div className="py-6">
+                <h2 className="text-xl font-semibold mb-4">
+                  {language === "en" ? "My Listings" : "Мои объявления"}
+                </h2>
+
+                {userListings.length === 0 ? (
+                  <div
+                    className={`text-center py-8 ${
+                      darkMode ? "text-gray-300" : "text-gray-500"
+                    }`}
+                  >
+                    <Icon name="FileText" size={48} className="mx-auto mb-4" />
+                    <p>
+                      {language === "en"
+                        ? "No listings yet"
+                        : "Пока нет объявлений"}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    {viewMode === "gallery" ? (
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                        {userListings.map((listing) => (
+                          <Card
+                            key={listing.id}
+                            className={`transition-all duration-300 ${
+                              darkMode
+                                ? "bg-[#36393F] border-gray-600"
+                                : "bg-white border-gray-200"
+                            }`}
+                          >
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <CardTitle
+                                    className={`text-base sm:text-lg font-semibold mb-2 ${
+                                      darkMode ? "text-white" : "text-gray-900"
+                                    }`}
+                                  >
+                                    {listing.title}
+                                  </CardTitle>
+                                  <p
+                                    className={`text-xs sm:text-sm ${
+                                      darkMode
+                                        ? "text-gray-100"
+                                        : "text-gray-600"
+                                    }`}
+                                  >
+                                    {listing.description}
+                                  </p>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="destructive"
+                                  onClick={() =>
+                                    handleDeleteListing(listing.id)
+                                  }
+                                  className="p-2"
+                                >
+                                  <Icon name="Trash2" size={14} />
+                                </Button>
+                              </div>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <div className="text-lg sm:text-xl font-bold text-[#5865F2]">
+                                    {listing.price.toLocaleString()}{" "}
+                                    {listing.currency}
+                                  </div>
+                                  <Badge
+                                    variant="secondary"
+                                    className={`text-xs ${
+                                      darkMode
+                                        ? "bg-gray-600 text-gray-100"
+                                        : "bg-gray-200 text-gray-800"
+                                    }`}
+                                  >
+                                    {
+                                      categories.find(
+                                        (cat) => cat.id === listing.category,
+                                      )?.name
+                                    }
+                                  </Badge>
+                                </div>
+
+                                <div className="flex items-center justify-between text-xs sm:text-sm">
+                                  <div className="flex items-center space-x-2 sm:space-x-4">
+                                    <div className="flex items-center space-x-1">
+                                      <Icon
+                                        name="Users"
+                                        size={14}
+                                        className={
+                                          darkMode
+                                            ? "text-gray-300"
+                                            : "text-gray-600"
+                                        }
+                                      />
+                                      <span
+                                        className={
+                                          darkMode
+                                            ? "text-gray-200"
+                                            : "text-gray-700"
+                                        }
+                                      >
+                                        {listing.members.toLocaleString()}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Icon
+                                        name="Eye"
+                                        size={14}
+                                        className={
+                                          darkMode
+                                            ? "text-gray-300"
+                                            : "text-gray-600"
+                                        }
+                                      />
+                                      <span
+                                        className={
+                                          darkMode
+                                            ? "text-gray-200"
+                                            : "text-gray-700"
+                                        }
+                                      >
+                                        {listing.views}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Icon
+                                        name="MousePointerClick"
+                                        size={14}
+                                        className={
+                                          darkMode
+                                            ? "text-gray-300"
+                                            : "text-gray-600"
+                                        }
+                                      />
+                                      <span
+                                        className={
+                                          darkMode
+                                            ? "text-gray-200"
+                                            : "text-gray-700"
+                                        }
+                                      >
+                                        {listing.clicks}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleEditListing(listing)}
+                                    className="text-xs sm:text-sm px-2 sm:px-3"
+                                  >
+                                    <Icon
+                                      name="Edit"
+                                      className="mr-1"
+                                      size={14}
+                                    />
+                                    <span className="hidden sm:inline">
+                                      {language === "en"
+                                        ? "Edit"
+                                        : "Редактировать"}
+                                    </span>
+                                    <span className="sm:hidden">
+                                      {language === "en" ? "Edit" : "Ред."}
+                                    </span>
+                                  </Button>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {userListings.map((listing) => (
+                          <Card
+                            key={listing.id}
+                            className={`transition-all duration-300 ${
+                              darkMode
+                                ? "bg-[#36393F] border-gray-600"
+                                : "bg-white border-gray-200"
+                            }`}
+                          >
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <CardTitle
+                                    className={`text-lg font-semibold mb-2 ${
+                                      darkMode ? "text-white" : "text-gray-900"
+                                    }`}
+                                  >
+                                    {listing.title}
+                                  </CardTitle>
+                                  <p
+                                    className={`text-sm mb-3 ${
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-600"
+                                    }`}
+                                  >
+                                    {listing.description}
+                                  </p>
+                                  <div className="flex items-center space-x-6 text-sm">
+                                    <div className="flex items-center space-x-1">
+                                      <Icon
+                                        name="Users"
+                                        size={14}
+                                        className={
+                                          darkMode
+                                            ? "text-gray-300"
+                                            : "text-gray-600"
+                                        }
+                                      />
+                                      <span
+                                        className={
+                                          darkMode
+                                            ? "text-gray-200"
+                                            : "text-gray-700"
+                                        }
+                                      >
+                                        {listing.members.toLocaleString()}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Icon
+                                        name="Eye"
+                                        size={14}
+                                        className={
+                                          darkMode
+                                            ? "text-gray-300"
+                                            : "text-gray-600"
+                                        }
+                                      />
+                                      <span
+                                        className={
+                                          darkMode
+                                            ? "text-gray-200"
+                                            : "text-gray-700"
+                                        }
+                                      >
+                                        {listing.views}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                      <Icon
+                                        name="MousePointerClick"
+                                        size={14}
+                                        className={
+                                          darkMode
+                                            ? "text-gray-300"
+                                            : "text-gray-600"
+                                        }
+                                      />
+                                      <span
+                                        className={
+                                          darkMode
+                                            ? "text-gray-200"
+                                            : "text-gray-700"
+                                        }
+                                      >
+                                        {listing.clicks}
+                                      </span>
+                                    </div>
+                                    <Badge
+                                      variant="secondary"
+                                      className={`text-xs ${
+                                        darkMode
+                                          ? "bg-gray-600 text-gray-100"
+                                          : "bg-gray-200 text-gray-800"
+                                      }`}
+                                    >
+                                      {
+                                        categories.find(
+                                          (cat) => cat.id === listing.category,
+                                        )?.name
+                                      }
+                                    </Badge>
+                                  </div>
+                                </div>
+                                <div className="text-right flex flex-col items-end">
+                                  <div className="text-xl font-bold text-[#5865F2] mb-2">
+                                    {listing.price.toLocaleString()}{" "}
+                                    {listing.currency}
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={() => handleEditListing(listing)}
+                                      className="text-sm px-3"
+                                    >
+                                      <Icon
+                                        name="Edit"
+                                        className="mr-1"
+                                        size={14}
+                                      />
+                                      {language === "en"
+                                        ? "Edit"
+                                        : "Редактировать"}
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="destructive"
+                                      onClick={() =>
+                                        handleDeleteListing(listing.id)
+                                      }
+                                      className="p-2"
+                                    >
+                                      <Icon name="Trash2" size={14} />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            </CardHeader>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </TabsContent>
