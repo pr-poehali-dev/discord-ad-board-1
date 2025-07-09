@@ -84,7 +84,7 @@ const Index = () => {
     { id: "it", name: language === "en" ? "IT" : "ИТ" },
   ];
 
-  const currencies = ["USD", "EUR", "RUB", "BTC"];
+  const currencies = ["USD", "EUR", "RUB", "LTC"];
 
   const [listings, setListings] = useState<Listing[]>([
     {
