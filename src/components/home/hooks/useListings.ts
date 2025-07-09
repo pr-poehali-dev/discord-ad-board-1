@@ -5,83 +5,87 @@ export function useListings(language: string) {
   const [listings, setListings] = useState<Listing[]>([
     {
       id: "1",
-      title:
-        language === "en"
-          ? "Gaming Community Advertisement"
-          : "Реклама игрового сообщества",
+      title: "Premium Gaming Community",
       description:
-        language === "en"
-          ? "We are looking for partnerships to advertise on large gaming servers. Target audience: 18-35 years old, interested in MMORPG and FPS games."
-          : "Мы ищем партнерство для рекламы на крупных игровых серверах. Целевая аудитория: 18-35 лет, интересующиеся MMORPG и FPS играми.",
+        "A thriving gaming community with active members and great engagement",
       category: "gaming",
-      price: 500,
+      price: 299,
       currency: "USD",
       serverLink: "https://discord.gg/example1",
-      serverName: "GameHub Discord",
       members: 15420,
-      views: 1234,
-      clicks: 89,
-      timeAgo: language === "en" ? "2 hours ago" : "2 часа назад",
+      views: 1250,
+      clicks: 85,
+      timeAgo: "2 hours ago",
+      serverName: "GameHub Elite",
+      isOwner: true,
       isPinned: true,
     },
     {
       id: "2",
-      title:
-        language === "en"
-          ? "Cryptocurrency Project Marketing"
-          : "Маркетинг криптопроекта",
+      title: "Crypto Trading Hub",
       description:
-        language === "en"
-          ? "We need advertising placement for our new DeFi platform. We offer competitive rates and flexible payment terms."
-          : "Нужно размещение рекламы нашей новой DeFi-платформы. Предлагаем конкурентные ставки и гибкие условия оплаты.",
+        "Professional cryptocurrency trading signals and market analysis",
       category: "finance",
-      price: 1200,
-      currency: "USD",
+      price: 199,
+      currency: "EUR",
       serverLink: "https://discord.gg/example2",
-      serverName: "CryptoTrade Pro",
-      members: 8950,
-      views: 892,
-      clicks: 67,
-      timeAgo: language === "en" ? "5 hours ago" : "5 часов назад",
+      members: 8750,
+      views: 950,
+      clicks: 62,
+      timeAgo: "5 hours ago",
+      serverName: "CryptoTraders Pro",
+      isOwner: false,
+      isPinned: false,
     },
     {
       id: "3",
-      title:
-        language === "en"
-          ? "Educational Platform Promotion"
-          : "Продвижение образовательной платформы",
+      title: "Music Production Studio",
       description:
-        language === "en"
-          ? "We are promoting an online programming school and are looking for educational Discord servers for partnerships."
-          : "Мы продвигаем онлайн-школу программирования и ищем образовательные Discord-серверы для партнерства.",
-      category: "education",
-      price: 300,
-      currency: "EUR",
+        "Learn music production, share beats, and collaborate with other artists",
+      category: "music",
+      price: 149,
+      currency: "USD",
       serverLink: "https://discord.gg/example3",
-      serverName: "CodeAcademy Hub",
       members: 12300,
-      views: 567,
-      clicks: 45,
-      timeAgo: language === "en" ? "1 day ago" : "1 день назад",
+      views: 1180,
+      clicks: 73,
+      timeAgo: "1 day ago",
+      serverName: "BeatMakers United",
+      isOwner: false,
+      isPinned: false,
     },
     {
       id: "4",
-      title:
-        language === "en" ? "My Gaming Server Ad" : "Моё игровое объявление",
-      description:
-        language === "en"
-          ? "Promote your projects on my Minecraft server with 5000+ active players"
-          : "Рекламируйте свои проекты на моём Minecraft-сервере с 5000+ активных игроков",
-      category: "gaming",
-      price: 150,
+      title: "Tech Learning Hub",
+      description: "Programming tutorials, code reviews, and career guidance",
+      category: "education",
+      price: 99,
       currency: "USD",
-      serverLink: "https://discord.gg/myserver",
-      serverName: "MyMinecraft Server",
-      members: 5240,
-      views: 234,
-      clicks: 23,
-      timeAgo: language === "en" ? "3 days ago" : "3 дня назад",
+      serverLink: "https://discord.gg/example4",
+      members: 6500,
+      views: 780,
+      clicks: 45,
+      timeAgo: "2 days ago",
+      serverName: "DevCommunity",
       isOwner: true,
+      isPinned: false,
+    },
+    {
+      id: "5",
+      title: "IT Professionals Network",
+      description:
+        "Connect with IT professionals, share knowledge, and find job opportunities",
+      category: "it",
+      price: 175,
+      currency: "EUR",
+      serverLink: "https://discord.gg/example5",
+      members: 9200,
+      views: 1050,
+      clicks: 68,
+      timeAgo: "3 days ago",
+      serverName: "TechPros Hub",
+      isOwner: false,
+      isPinned: false,
     },
   ]);
 
@@ -98,7 +102,7 @@ export function useListings(language: string) {
       members: Math.floor(Math.random() * 10000) + 1000,
       views: Math.floor(Math.random() * 500) + 50,
       clicks: Math.floor(Math.random() * 50) + 5,
-      timeAgo: language === "en" ? "Just now" : "Только что",
+      timeAgo: "Just now",
       isOwner: true,
     };
     setListings((prev) => [listing, ...prev]);

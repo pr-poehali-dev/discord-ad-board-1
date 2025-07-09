@@ -201,7 +201,6 @@ export function ListingCard({
     >
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row items-start gap-4">
-          {/* Content section */}
           <div className="flex-1">
             <div className="flex items-start justify-between mb-2">
               <CardTitle
@@ -405,6 +404,17 @@ export function ListingCard({
             </div>
           </div>
         </div>
+        {listing.isPinned && (
+          <div className="px-6 pb-3">
+            <Badge
+              variant="secondary"
+              className="text-xs bg-yellow-100 text-yellow-800 border-yellow-300 dark:bg-yellow-900 dark:text-yellow-100 dark:border-yellow-600"
+            >
+              <Icon name="Pin" size={10} className="mr-1" />
+              {t("listing.pinned")}
+            </Badge>
+          </div>
+        )}
       </CardHeader>
     </Card>
   );
