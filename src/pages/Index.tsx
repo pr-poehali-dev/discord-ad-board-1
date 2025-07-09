@@ -41,6 +41,7 @@ interface Listing {
   serverLink: string;
   members: number;
   views: number;
+  clicks: number;
   timeAgo: string;
   serverName: string;
   isOwner?: boolean;
@@ -103,6 +104,7 @@ const Index = () => {
       serverLink: "https://discord.gg/gamehub",
       members: 15000,
       views: 124,
+      clicks: 23,
       timeAgo: language === "en" ? "2 hours ago" : "2 часа назад",
       serverName: "GameHub",
     },
@@ -120,6 +122,7 @@ const Index = () => {
       serverLink: "https://discord.gg/cryptotalk",
       members: 8500,
       views: 89,
+      clicks: 15,
       timeAgo: language === "en" ? "4 hours ago" : "4 часа назад",
       serverName: "CryptoTalk",
     },
@@ -171,6 +174,7 @@ const Index = () => {
       serverLink: newListing.serverLink,
       members: Math.floor(Math.random() * 20000) + 1000,
       views: Math.floor(Math.random() * 200) + 10,
+      clicks: 0,
       timeAgo: language === "en" ? "Just now" : "Только что",
       serverName: newListing.title.split(" ")[0] || "Server",
       isOwner: true,
@@ -241,6 +245,16 @@ const Index = () => {
     setSelectedCategories([]);
     setSelectedCurrencies([]);
     setSortBy("newest");
+  };
+
+  const handleClick = (listingId: string) => {
+    setListings((prev) =>
+      prev.map((listing) =>
+        listing.id === listingId
+          ? { ...listing, clicks: listing.clicks + 1 }
+          : listing,
+      ),
+    );
   };
 
   return (
@@ -967,9 +981,13 @@ const Index = () => {
                                 size={16}
                               />
                               <span
-                                className={`text-xs sm:text-sm font-medium ${
+                                className={`text-xs sm:text-sm font-medium cursor-pointer hover:text-[#5865F2] transition-colors ${
                                   darkMode ? "text-gray-100" : "text-gray-900"
                                 }`}
+                                onClick={() => {
+                                  handleClick(listing.id);
+                                  window.open(listing.serverLink, "_blank");
+                                }}
                               >
                                 {listing.serverName}
                               </span>
@@ -1024,11 +1042,28 @@ const Index = () => {
                                   {listing.views}
                                 </span>
                               </div>
+                              <div className="flex items-center space-x-1">
+                                <Icon
+                                  name="MousePointerClick"
+                                  size={14}
+                                  className={
+                                    darkMode ? "text-gray-300" : "text-gray-600"
+                                  }
+                                />
+                                <span
+                                  className={
+                                    darkMode ? "text-gray-200" : "text-gray-700"
+                                  }
+                                >
+                                  {listing.clicks}
+                                </span>
+                              </div>
                             </div>
 
                             <Button
                               size="sm"
                               className="bg-[#5865F2] hover:bg-[#4752C4] text-white text-xs sm:text-sm px-2 sm:px-3"
+                              onClick={() => handleClick(listing.id)}
                             >
                               <Icon
                                 name="MessageCircle"
@@ -1172,6 +1207,26 @@ const Index = () => {
                                     }
                                   >
                                     {listing.views}
+                                  </span>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Icon
+                                    name="MousePointerClick"
+                                    size={14}
+                                    className={
+                                      darkMode
+                                        ? "text-gray-300"
+                                        : "text-gray-600"
+                                    }
+                                  />
+                                  <span
+                                    className={
+                                      darkMode
+                                        ? "text-gray-200"
+                                        : "text-gray-700"
+                                    }
+                                  >
+                                    {listing.clicks}
                                   </span>
                                 </div>
                               </div>
