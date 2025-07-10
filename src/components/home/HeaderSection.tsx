@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import Icon from "@/components/ui/icon";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import AnimatedBackground from "@/components/ui/animated-background";
 // import { CreateListingSheet } from "./CreateListingSheet";
 import { CurrentView } from "./types";
 
@@ -43,8 +44,9 @@ export function HeaderSection({
   changeLanguage,
 }: HeaderSectionProps) {
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-[#2F3136]">
-      <div className="container mx-auto px-4 py-6">
+    <div className="relative border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-[#2F3136] overflow-hidden">
+      <AnimatedBackground variant="header" />
+      <div className="relative z-10 container mx-auto px-4 py-6">
         <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
